@@ -157,6 +157,13 @@ public class entrepriseCRUD implements InterfaceCRUD<entreprise> {
         String sqlEmploye = "insert into employe(nom, prenom, e_mail, telephone, poste, role, date_embauche,image_profil, id_entreprise) values (?, ?, ?, ?, ?, ?, ?, ?,?)";
         try {
             conn.setAutoCommit(false);
+            
+            // Check if email already exists before processing
+            if (emailExists(e.getE_mail())) {
+                conn.rollback();
+                throw new SQLException("L'email '" + e.getE_mail() + "' existe déjà dans le système. Veuillez utiliser un email différent.");
+            }
+            
             try (PreparedStatement ps1 = conn.prepareStatement(sqlStatut)) {
                 ps1.setString(1, statut.acceptee.getLibelle());
                 ps1.setInt(2, e.getId());
@@ -182,7 +189,7 @@ public class entrepriseCRUD implements InterfaceCRUD<entreprise> {
                 }
             }
             String motDePasse = generationMotDePasse.generer();
-            compte c = new compte(e.getE_mail(), motDePasse, idEmploye);
+            compte c = new compte(motDePasse, idEmploye);
             compteCRUD.ajouter(c);
             conn.commit();
             String sujet = "Bienvenue sur momentum !";
@@ -200,6 +207,22 @@ public class entrepriseCRUD implements InterfaceCRUD<entreprise> {
         } finally {
             conn.setAutoCommit(true);
         }
+    }
+    
+    /**
+     * Check if an email already exists in the employe table
+     */
+    private boolean emailExists(String email) throws SQLException {
+        String sql = "SELECT COUNT(*) as count FROM employe WHERE e_mail = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("count") > 0;
+                }
+            }
+        }
+        return false;
     }
     public entreprise getById(int id) throws SQLException {
         String sql = "SELECT * FROM entreprise WHERE id_entreprise = ?";

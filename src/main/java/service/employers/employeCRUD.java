@@ -11,7 +11,10 @@ import utils.MyDB;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class employeCRUD {
     private Connection conn;
@@ -56,7 +59,7 @@ public class employeCRUD {
         int idEmploye = rs.getInt(1);
         employe.setId_employé(idEmploye);
         String motDePasse = generationMotDePasse.generer();
-        compte c = new compte(employe.getE_mail(), motDePasse, idEmploye);
+        compte c = new compte(motDePasse, idEmploye);
         compteCRUD.ajouter(c);
         String sujet = "Création de votre compte employé";
         String corps = "Bonjour " + employe.getPrenom() + ",\n\n"
@@ -84,6 +87,9 @@ public class employeCRUD {
     }
 
     public void modifier(employe employe) throws SQLException {
+        // Read previous CV state to decide whether extraction must be re-run.
+        employe ancien = getById(employe.getId_employé());
+
         String sql = "update employe set nom=?, prenom=?, e_mail=?, telephone=?, poste=?, role=?, date_embauche=?, image_profil=?, cv_data=?, cv_nom=? where id_employe=?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, employe.getNom());
@@ -106,6 +112,20 @@ public class employeCRUD {
         ps.setString(10, employe.getCv_nom());
         ps.setInt(11, employe.getId_employé());
         ps.executeUpdate();
+
+        boolean cvEtaitPresent = ancien != null && ancien.hasCv();
+        boolean cvEstPresent = employe.hasCv();
+        boolean cvDataChangee = ancien == null || !Arrays.equals(ancien.getCv_data(), employe.getCv_data());
+        boolean cvNomChange = ancien == null || !Objects.equals(ancien.getCv_nom(), employe.getCv_nom());
+        boolean cvChange = cvDataChangee || cvNomChange;
+
+        if (cvEstPresent && cvChange) {
+            // Re-run extraction when a new/updated CV is saved.
+            extraireCompetencesCV(employe);
+        } else if (cvEtaitPresent && !cvEstPresent) {
+            // If CV was removed, remove extracted competences for consistency.
+            competenceCRUD.supprimerParEmploye(employe.getId_employé());
+        }
     }
 
     public void supprimer(int id) throws SQLException {
@@ -163,20 +183,64 @@ public class employeCRUD {
 
         Thread thread = new Thread(() -> {
             try {
-                String jsonResult = extract_CV_data.extraireDepuisCV(e.getCv_data());
-                jsonResult = reparerJSON(jsonResult);
+                System.out.println("═══════════════════════════════════════════════════════════");
+                System.out.println("🔍 EXTRACTION CV - Début");
+                System.out.println("📄 Employé ID: " + e.getId_employé());
+                System.out.println("📄 Employé: " + e.getPrenom() + " " + e.getNom());
+                System.out.println("═══════════════════════════════════════════════════════════");
+
+                // Use new API that returns Map<String, Object>
+                Map<String, Object> extractionResult = extract_CV_data.extractCVData(e.getCv_data());
+
+                System.out.println("✅ Extraction résultat: " + (extractionResult.containsKey("success") && (boolean) extractionResult.get("success") ? "Succès" : "Erreur"));
+
+                if (!(boolean) extractionResult.getOrDefault("success", false)) {
+                    String error = (String) extractionResult.get("error");
+                    System.err.println("❌ Erreur d'extraction: " + error);
+                    return;
+                }
+
+                // Extract data from result map
+                Map<String, Object> data = (Map<String, Object>) extractionResult.get("data");
+                if (data == null) {
+                    System.err.println("❌ Données extraites vides");
+                    return;
+                }
+
+                List<String> skills = (List<String>) data.getOrDefault("skills", new ArrayList<>());
+                List<Map<String, String>> formations = (List<Map<String, String>>) data.getOrDefault("formations", new ArrayList<>());
+                List<Map<String, Object>> experience = (List<Map<String, Object>>) data.getOrDefault("experience", new ArrayList<>());
+
+                System.out.println("📊 Données extraites:");
+                System.out.println("   - Skills: " + skills.size());
+                System.out.println("   - Formations: " + formations.size());
+                System.out.println("   - Experience: " + experience.size());
+
+                // Convert to JSON strings
                 Gson gson = new Gson();
-                JsonObject root = gson.fromJson(jsonResult, JsonObject.class);
+                String skillsJson = gson.toJson(skills);
+                String formationsJson = gson.toJson(formations);
+                String experienceJson = gson.toJson(experience);
 
-                String skills = root.has("skills") ? gson.toJson(root.get("skills")) : "[]";
-                String formations = root.has("formations") ? gson.toJson(root.get("formations")) : "[]";
-                String experience = root.has("experience") ? gson.toJson(root.get("experience")) : "[]";
+                System.out.println("💾 Sauvegarde en base de données...");
 
-                competences_employe comp = new competences_employe(e.getId_employé(), skills, formations, experience);
+                // Create/update competences_employe record
+                competences_employe comp = new competences_employe(
+                        e.getId_employé(),
+                        skillsJson,
+                        formationsJson,
+                        experienceJson
+                );
 
                 crud.ajouter(comp);
+
+                System.out.println("✅ Compétences sauvegardées avec succès");
+                System.out.println("═══════════════════════════════════════════════════════════");
+
             } catch (Exception ex) {
+                System.err.println("❌ Erreur lors de l'extraction du CV: " + ex.getMessage());
                 ex.printStackTrace();
+                System.out.println("═══════════════════════════════════════════════════════════");
             }
         });
         thread.setDaemon(true);

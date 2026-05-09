@@ -61,7 +61,6 @@ public class compteCRUD  {
         if (rs.next()) {
             compte c = new compte();
             c.setId(rs.getInt("id_compte"));
-            c.setE_mail(e_mail);
             c.setPassword(rs.getString("mot_de_passe"));
             c.setId_employe(rs.getInt("id_employe"));
             return c;
@@ -86,7 +85,6 @@ public class compteCRUD  {
                     if (storedPassword.equals(hashedInput) || storedPassword.equals(password)) {
                         compte c = new compte();
                         c.setId(rs.getInt("id_compte"));
-                        c.setE_mail(email);
                         c.setPassword(storedPassword);
                         c.setId_employe(rs.getInt("id_employe"));
                         return c;
@@ -101,13 +99,12 @@ public class compteCRUD  {
         return null;
     }
     public compte findByEmployeId(int idEmploye) throws SQLException {
-        String sql = "SELECT c.*, e.e_mail FROM compte c JOIN employe e ON c.id_employe = e.id_employe WHERE c.id_employe = ?";
+        String sql = "SELECT c.* FROM compte c WHERE c.id_employe = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, idEmploye);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             return new compte(
-                    rs.getString("e_mail"),
                     rs.getString("mot_de_passe"),
                     rs.getInt("id_employe")
             );

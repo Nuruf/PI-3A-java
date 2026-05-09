@@ -1,9 +1,9 @@
 package entities.employers;
 
 public enum statut {
-    acceptee("accéptée"),
-    refusee("réfusée"),
-    enattende("en attende");
+    acceptee("acceptée"),
+    refusee("refusée"),
+    enattende("en attente");
     private String libelle;
     private statut(String libelle) {
         this.libelle = libelle;

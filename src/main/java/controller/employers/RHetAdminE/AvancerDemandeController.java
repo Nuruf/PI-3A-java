@@ -153,9 +153,17 @@ public class AvancerDemandeController implements Initializable {
                     }
                 }
             } else if (session.getCompte() != null) {
-                String email = session.getCompte().getE_mail();
-                if (email != null && !email.isEmpty()) {
-                    connectedActeurFullName = email;
+                // Get email from employe table using id_employe from compte
+                try {
+                    employe emp2 = employeCrud.getById(session.getCompte().getId_employe());
+                    if (emp2 != null) {
+                        String email = emp2.getE_mail();
+                        if (email != null && !email.isEmpty()) {
+                            connectedActeurFullName = email;
+                        }
+                    }
+                } catch (Exception e2) {
+                    System.out.println("Could not fetch employe from compte: " + e2.getMessage());
                 }
             }
         } catch (Exception e) {

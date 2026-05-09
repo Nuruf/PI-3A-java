@@ -16,6 +16,7 @@ public class configLoader {
             if (is != null) {
                 properties.load(is);
             } else {
+                System.err.println("config.properties not found");
             }
         } catch (Exception e) {
             System.err.println("Erreur chargement config : " + e.getMessage());
@@ -24,9 +25,24 @@ public class configLoader {
 
     public static String get(String key) {
         load();
-        return properties.getProperty(key, "");
+        String value = properties.getProperty(key, "");
+        return value != null ? value.trim() : "";
     }
 
+    // Groq API Configuration
+    public static String getGroqApiUrl() {
+        return get("groq.api.url");
+    }
+
+    public static String getGroqApiKey() {
+        return get("groq.api.key");
+    }
+
+    public static String getGroqModel() {
+        return get("groq.model");
+    }
+
+    // Legacy Hugging Face Configuration (deprecated)
     public static String getApiToken() {
         return get("huggingface.api.token");
     }

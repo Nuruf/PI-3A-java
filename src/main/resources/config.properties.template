@@ -1,6 +1,10 @@
-# Hugging Face API Configuration Template
+# Groq API Configuration
 # Copy this file to config.properties and fill in your actual values
+groq.api.url=https://api.groq.com/openai/v1/chat/completions
+groq.api.key=YOUR_GROQ_API_KEY_HERE
+groq.model=mixtral-8x7b-32768
 
-huggingface.api.url=YOUR_HUGGINGFACE_API_URL_HERE
-huggingface.api.token=YOUR_HUGGINGFACE_API_TOKEN_HERE
+# Legacy Hugging Face Configuration (deprecated)
+huggingface.api.url=https://api-inference.huggingface.co/v1/messages
+huggingface.api.token=YOUR_HF_API_TOKEN_HERE
 
