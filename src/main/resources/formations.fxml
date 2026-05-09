@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.formations.FormationsController">
+    <children>
+        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <tabs>
+                <Tab fx:id="tabFormations" text="Formations">
+                    <content>
+                        <HBox>
+                            <children>
+                                <!-- LEFT: MAIN DASHBOARD -->
+                                <VBox spacing="25.0" HBox.hgrow="ALWAYS">
+                                    <padding>
+                                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                                    </padding>
+                                    <children>
+
+                                        <!-- HEADER amélioré -->
+                                        <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 3);">
+                                            <children>
+                                                <VBox HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label style="-fx-font-weight: bold; -fx-font-size: 26px; -fx-text-fill: white;" text="📚 Dashboard des Formations" />
+                                                        <Label text="Visualisez et gérez vos sessions de formation" style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 14px;" />
+                                                    </children>
+                                                </VBox>
+
+                                            </children>
+                                        </HBox>
+
+                                        <FlowPane fx:id="statisticsPane" prefHeight="199.0" prefWidth="608.0">
+                                            <children>
+                                                <VBox prefWidth="180.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #667eea 0%, #764ba2 100%); -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);">
+                                                    <children>
+                                                        <Label text="📊 Total" style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 13px; -fx-font-weight: 500;" />
+                                                        <Label fx:id="lblTotal" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: white;" text="0" />
+                                                    </children>
+                                                    <FlowPane.margin>
+                                                        <Insets left="10.0" right="10.0" top="20.0" />
+                                                    </FlowPane.margin>
+                                                </VBox>
+                                                <VBox prefWidth="180.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #f093fb 0%, #f5576c 100%); -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);">
+                                                    <children>
+                                                        <Label text="🔜 À venir" style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 13px; -fx-font-weight: 500;" />
+                                                        <Label fx:id="lblUpcoming" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: white;" text="0" />
+                                                    </children>
+                                                    <FlowPane.margin>
+                                                        <Insets left="10.0" right="10.0" top="20.0" />
+                                                    </FlowPane.margin>
+                                                </VBox>
+                                                <VBox prefWidth="180.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #4facfe 0%, #00f2fe 100%); -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);">
+                                                    <children>
+                                                        <Label text="⏳ En cours" style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 13px; -fx-font-weight: 500;" />
+                                                        <Label fx:id="lblOngoing" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: white;" text="0" />
+                                                    </children>
+                                                    <FlowPane.margin>
+                                                        <Insets left="10.0" right="10.0" top="20.0" />
+                                                    </FlowPane.margin>
+                                                </VBox>
+                                                <VBox prefWidth="180.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #43e97b 0%, #38f9d7 100%); -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);">
+                                                    <children>
+                                                        <Label text="✅ Terminées" style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 13px; -fx-font-weight: 500;" />
+                                                        <Label fx:id="lblCompleted" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: white;" text="0" />
+                                                    </children>
+                                                    <FlowPane.margin>
+                                                        <Insets left="10.0" right="10.0" top="20.0" />
+                                                    </FlowPane.margin>
+                                                </VBox>
+                                            </children>
+                                            <padding>
+                                                <Insets top="-15.0" />
+                                            </padding>
+                                        </FlowPane>
+
+                                        <!-- SEARCH BAR -->
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                            <children>
+                                                <TextField fx:id="txtSearch" prefHeight="35.0" prefWidth="350.0" promptText="Rechercher par titre ou organisme..." />
+                                                <Region HBox.hgrow="ALWAYS" />
+                                                <ComboBox fx:id="filterLieu" prefHeight="35.0" promptText="Lieu" />
+                                            </children>
+                                        </HBox>
+
+                                        <!-- SCROLLABLE LIST OF CARDS -->
+                                        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+                                            <content>
+                                                <VBox fx:id="formationsContainer" spacing="12.0">
+                                                    <padding>
+                                                        <Insets right="10.0" />
+                                                    </padding>
+                                                    <!-- Cards will be injected here via Java -->
+                                                </VBox>
+                                            </content>
+                                        </ScrollPane>
+                                    </children>
+                                </VBox>
+
+                                <!-- FORM PANEL avec header amélioré -->
+                                <VBox prefWidth="350.0" spacing="20.0" style="-fx-background-color: -color-base-0; -fx-border-color: -color-border-muted; -fx-border-width: 0 0 0 1;">
+                                    <padding>
+                                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                                    </padding>
+                                    <children>
+                                        <!-- Header avec icône -->
+                                        <VBox spacing="8.0">
+                                            <children>
+                                                <Label style="-fx-font-weight: bold; -fx-font-size: 20px;" text="📝 Détails de la Formation" />
+                                                <Label text="Remplissez le formulaire ci-dessous" style="-fx-text-fill: #6e6e6e; -fx-font-size: 12px;" />
+                                            </children>
+                                        </VBox>
+                                        <Separator />
+
+                                        <VBox spacing="15.0" VBox.vgrow="ALWAYS">
+                                            <children>
+                                                <VBox spacing="5.0">
+                                                    <children>
+                                                        <Label text="Titre" />
+                                                        <TextField fx:id="txtTitre" promptText="Ex: Java Avance" />
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="5.0">
+                                                    <children>
+                                                        <Label text="Organisme" />
+                                                        <TextField fx:id="txtOrganisme" promptText="Ex: Oracle Academy" />
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="5.0">
+                                                    <children>
+                                                        <Label text="Date debut" />
+                                                        <DatePicker fx:id="dpDateDebut" maxWidth="Infinity" />
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="5.0">
+                                                    <children>
+                                                        <Label text="Date fin" />
+                                                        <DatePicker fx:id="dpDateFin" maxWidth="Infinity" />
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="5.0">
+                                                    <children>
+                                                        <Label text="Lieu" />
+                                                        <TextField fx:id="txtLieu" promptText="Ex: Tunis" />
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="5.0">
+                                                    <children>
+                                                        <Label text="Capacite" />
+                                                        <TextField fx:id="txtCapacite" promptText="Ex: 20" />
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </VBox>
+
+                                        <VBox spacing="10.0">
+                                            <children>
+                                                <Button fx:id="btnSave" maxWidth="Infinity" onAction="#handleSave" prefHeight="40.0" styleClass="accent" text="Ajouter" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </content>
+                </Tab>
+                <Tab fx:id="tabListeFormations" text="Liste des Formations Disponibles">
+                    <content>
+                        <VBox spacing="25.0">
+                            <padding>
+                                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                            </padding>
+                            <children>
+                                <!-- HEADER amélioré -->
+                                <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: linear-gradient(to right, #f093fb 0%, #f5576c 100%); -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 3);">
+                                    <children>
+                                        <VBox HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label style="-fx-font-weight: bold; -fx-font-size: 26px; -fx-text-fill: white;" text="🎓 Formations Disponibles" />
+                                                <Label text="Découvrez et inscrivez-vous aux formations proposées" style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 14px;" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+
+                                <!-- SEARCH BAR -->
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <TextField fx:id="txtSearchEmploye" prefHeight="35.0" prefWidth="350.0" promptText="Rechercher une formation..." />
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <ComboBox fx:id="filterLieuEmploye" prefHeight="35.0" promptText="Lieu" />
+                                    </children>
+                                </HBox>
+
+                                <!-- SCROLLABLE LIST OF AVAILABLE FORMATIONS -->
+                                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+                                    <content>
+                                        <VBox fx:id="availableFormationsContainer" spacing="12.0">
+                                            <padding>
+                                                <Insets right="10.0" />
+                                            </padding>
+                                            <!-- Formation cards with Inscription button will be injected here -->
+                                        </VBox>
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>

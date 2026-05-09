@@ -1,0 +1,482 @@
+/* Palette Couleur Momentum - Accent Colors */
+
+.root {
+    -color-accent-0: #F0F5FF;
+    -color-accent-1: #D3F0FF;
+    -color-accent-2: #C0E0FF;
+    -color-accent-3: #8DAFFF;
+    -color-accent-4: #6680FF;
+    -color-accent-5: #4A5DEF;
+    -color-accent-6: #3944D5;
+    -color-accent-7: #2926BA;
+    -color-accent-8: #1E009F;
+    -color-accent-9: #170080;
+
+    -color-accent-fg: #4A5DEF;
+    -color-accent-emphasis: #4A5DEF;
+    -color-accent-muted: rgba(57, 68, 213, 0.4);
+
+    /* PrimerLight Statistical Colors */
+    -primer-success-fg: #1a7f37;
+    -primer-success-subtle: #dafbe1;
+    -primer-success-emphasis: #1a7f37;
+
+    -primer-warning-fg: #9e6a03;
+    -primer-warning-subtle: #fff8c5;
+    -primer-warning-emphasis: #9e6a03;
+
+    -primer-info-fg: #0969da;
+    -primer-info-subtle: #ddf4ff;
+    -primer-info-emphasis: #0969da;
+}
+
+/* SideBar */
+
+.logo-button .image-view {
+    -fx-opacity: 1.0 !important;
+}
+
+.sidebar {
+    -fx-background-color: -color-base-0;
+    -fx-border-color: -color-base-3;
+    -fx-border-width: 0 1 0 0;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-padding: 10 15 10 15;
+    -fx-background-radius: 0;
+    -fx-cursor: hand;
+
+    -fx-border-width: 0 0 0 4;
+    -fx-border-color: transparent;
+    -fx-border-style: solid;
+}
+
+.nav-button .image-view {
+    -fx-opacity: 0.65;
+}
+
+.nav-button:hover {
+    -fx-opacity: 0.85;
+}
+
+.nav-active {
+    -fx-border-width: 0 0 0 4;
+    -fx-border-color: -color-accent-emphasis;
+    -fx-border-style: solid;
+}
+
+.nav-active .image-view {
+    -fx-opacity: 1.0;
+}
+
+.nav-label {
+    -fx-text-fill: -color-fg-default;
+    -fx-font-size: 13px;
+    -fx-opacity: 0;
+    -fx-managed: false;
+}
+
+.sidebar.expanded .nav-label {
+    -fx-opacity: 1.0;
+    -fx-managed: true;
+}
+
+/* card stuff (testing) */
+
+/* The base state for cards (ensure this is there) */
+.glass-card, .offer-card {
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+/* THE SELECTED STATE */
+.card-selected {
+
+    /* Blue left indicator bar */
+    /*-fx-border-color: -color-base-4; */
+    -fx-border-width: 1 1 1 5; /* 5px bar on the left */
+}
+
+/***candidat stuff*/
+
+/* Stats Boxes in Candidatures Tab */
+.stat-box {
+    -fx-padding: 10;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-background-color: -color-bg-subtle;
+    -fx-border-color: -color-border-muted;
+}
+
+.stat-preselected {
+    -fx-background-color: -color-accent-subtle;
+    -fx-border-color: -color-accent-border;
+}
+.stat-preselected .label { -fx-text-fill: -color-accent-fg; }
+
+.stat-interview {
+    -fx-background-color: -color-info-subtle;
+    -fx-border-color: -color-info-border;
+}
+.stat-interview .label { -fx-text-fill: -color-info-fg; }
+
+.stat-accepted {
+    -fx-background-color: -color-success-subtle;
+    -fx-border-color: -color-success-border;
+}
+.stat-accepted .label { -fx-text-fill: -color-success-fg; }
+
+
+/* ------------------------------------------------------------------- */
+
+.job-card {
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* Fixed Side Panel */
+.side-inspector {
+    -fx-background-color: -color-bg-subtle;
+    -fx-border-color: -color-border-muted;
+    -fx-border-width: 0 0 0 1;
+    -fx-min-width: 350;
+    -fx-pref-width: 350;
+}
+/* Remove the blue focus ring from the HTMLEditor */
+
+/* If the border still appears, force a neutral color or hide it */
+.html-editor {
+    -fx-border-color: -color-border-default; /* Use the standard gray border */
+    -fx-border-width: 1px; /* Keep it thin */
+}
+
+.html-editor .web-view {
+    -fx-focus-traversable: false;
+}
+
+
+/* Base style for all badges */
+.badge {
+    -fx-padding: 2 10;
+    -fx-background-radius: 12;
+    -fx-font-size: 10;
+    -fx-font-weight: bold;
+}
+
+/* Color variations using theme variables */
+.badge-accent {
+    -fx-background-color: -color-accent-subtle;
+    -fx-text-fill: -color-accent-fg;
+}
+
+.badge-success {
+    -fx-background-color: -color-success-subtle;
+    -fx-text-fill: -color-success-fg;
+}
+
+.badge-danger {
+    -fx-background-color: -color-danger-subtle;
+    -fx-text-fill: -color-danger-fg;
+}
+
+.badge-info {
+    -fx-background-color: -color-info-subtle;
+    -fx-text-fill: -color-info-fg;
+}
+
+.badge-neutral {
+    -fx-background-color: -color-base-2;
+    -fx-text-fill: -color-fg-muted;
+}
+
+/* Ensure the root knows these variables exist */
+.root {
+    /* If the theme lookups fail, these act as fallbacks */
+    -color-info-fg: -color-accent-fg; /* Fallback to accent if info is missing */
+    -color-info-subtle: -color-accent-subtle;
+}
+
+/* Base style for all badges */
+.badge {
+    -fx-padding: 2 10;
+    -fx-background-radius: 12;
+    -fx-font-size: 10;
+    -fx-font-weight: bold;
+}
+
+/* Color variations */
+.badge-accent {
+    -fx-background-color: -color-accent-subtle;
+    -fx-text-fill: -color-accent-fg;
+}
+
+.badge-success {
+    -fx-background-color: -color-success-subtle;
+    -fx-text-fill: -color-success-fg;
+}
+
+.badge-danger {
+    -fx-background-color: -color-danger-subtle;
+    -fx-text-fill: -color-danger-fg;
+}
+
+/* Use direct theme colors (-color-info-5 is a standard AtlantaFX color)
+   to avoid the 'derived lookup' error */
+.badge-info {
+    -fx-background-color: #ddf4ff; /* Hardcoded light blue for safety */
+    -fx-text-fill: #0969da;        /* Hardcoded dark blue for safety */
+}
+
+.badge-neutral {
+    -fx-background-color: -color-base-2;
+    -fx-text-fill: -color-fg-muted;
+}
+
+/********************************************************/
+
+/* Hero Block with a modern gradient */
+.hero-block {
+    -fx-background-color: linear-gradient(to right, #2926BA, #3944D5, #4A5DEF, #6680FF);
+    -fx-background-radius: 0;
+}
+
+.hero-title {
+    -fx-font-size: 36px;
+    -fx-font-weight: 900;
+    -fx-font-family: "System";
+}
+
+.hero-subtitle {
+    -fx-font-size: 16px;
+    -fx-opacity: 0.8;
+}
+
+.momentum-search-bar {
+    -fx-background-color: #F59E0B;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 5);
+}
+
+.momentum-search-bar .text-field {
+    -fx-background-radius: 5;
+    -fx-background-color: white;
+    -fx-border-width: 0;
+    -fx-font-size: 14px;
+}
+
+.tanit-btn {
+    -fx-background-color: #2c3e50; /* Dark gray/navy button */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+.tanit-btn:hover {
+    -fx-background-color: #1a252f;
+}
+
+/* Job Card subtle updates */
+.job-card {
+    -fx-background-color: -color-bg-default;
+    -fx-background-radius: 12;
+    -fx-border-color: -color-border-muted;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 2);
+}
+
+/*******************************************************************/
+
+.stat-card-accent, .stat-card-success, .stat-card-warning {
+    -fx-background-color: -color-bg-default;
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+    -fx-border-width: 0 0 0 5; /* Left indicator bar */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);
+}
+
+.stat-card-accent { -fx-border-color: -color-accent-emphasis; }
+.stat-card-success { -fx-border-color: -color-success-emphasis; }
+.stat-card-warning { -fx-border-color: -color-warning-emphasis; }
+
+.chart-container {
+    -fx-background-color: -color-bg-default;
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+    -fx-border-color: -color-border-muted;
+    -fx-border-width: 1;
+}
+
+/* Make charts look cleaner */
+.chart-pie-label { -fx-fill: -color-fg-default; }
+.axis { -fx-tick-label-fill: -color-fg-muted; }
+
+/* chart colors */
+
+/* Color 0 - Primary Blue */
+.default-color0.chart-bar,
+.default-color0.chart-pie { -fx-bar-fill: #0969da; -fx-pie-color: #0969da; }
+
+/* Color 1 - Success Green */
+.default-color1.chart-bar,
+.default-color1.chart-pie { -fx-bar-fill: #1a7f37; -fx-pie-color: #1a7f37; }
+
+/* Color 2 - Warning Yellow (Forcing a true yellow, not orange) */
+.default-color2.chart-bar,
+.default-color2.chart-pie { -fx-bar-fill: #f9d749; -fx-pie-color: #f9d749; }
+
+/* Color 3 - Soft Blue/Teal */
+.default-color3.chart-bar,
+.default-color3.chart-pie { -fx-bar-fill: #54aeff; -fx-pie-color: #54aeff; }
+
+
+.button.accent:hover {
+    -fx-background-color: linear-gradient(to bottom, #5568d3, #6541a5);
+}
+
+.button.accent:pressed {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 1);
+}
+
+/* ========== STYLES MODULE ANNONCES (à coller à la fin) ========== */
+
+.annonce-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 10, 0, 0, 2);
+    -fx-border-color: #e8e8e8;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+.annonce-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 15, 0, 0, 3);
+    -fx-cursor: hand;
+}
+
+.event-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.15), 12, 0, 0, 2);
+    -fx-border-color: #90CAF9;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+}
+.event-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.25), 15, 0, 0, 3);
+    -fx-cursor: hand;
+}
+
+.form-card {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 12;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+}
+
+.form-input-pro {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-padding: 12 16;
+    -fx-font-size: 14px;
+    -fx-border-color: #dfe3e8;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-text-fill: #1a1f36;
+}
+.form-input-pro:focused {
+    -fx-border-color: #3b82f6;
+    -fx-border-width: 2;
+}
+
+.badge-type-annonce {
+    -fx-background-color: #F59E0B;
+    -fx-text-fill: white;
+    -fx-background-radius: 4;
+    -fx-padding: 4 10;
+    -fx-font-size: 11px;
+}
+.badge-type-event {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-background-radius: 4;
+    -fx-padding: 4 10;
+    -fx-font-size: 11px;
+}
+
+.badge-active {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-background-radius: 4;
+    -fx-padding: 4 8;
+    -fx-font-size: 11px;
+}
+.badge-inactive {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+    -fx-background-radius: 4;
+    -fx-padding: 4 8;
+    -fx-font-size: 11px;
+}
+
+.btn-filter-annonce {
+    -fx-background-color: #FEF3C7;
+    -fx-text-fill: #92400E;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-border-color: #F59E0B;
+    -fx-border-width: 1;
+}
+.btn-filter-annonce:hover { -fx-background-color: #FDE68A; }
+
+.btn-filter-event {
+    -fx-background-color: #DBEAFE;
+    -fx-text-fill: #1E3A8A;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-border-color: #2196F3;
+    -fx-border-width: 1;
+}
+.btn-filter-event:hover { -fx-background-color: #BFDBFE; }
+
+.btn-card-modifier {
+    -fx-background-color: #4A5DEF;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.btn-card-modifier:hover { -fx-background-color: #3944D5; }
+
+.btn-card-supprimer {
+    -fx-background-color: #1a1a1a;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.btn-card-supprimer:hover { -fx-background-color: #2d2d2d; }
+
+.main-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.main-scroll-pane > .viewport { -fx-background-color: #ffffff; }
+.main-scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 5;
+}
+.main-scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #c0c0c0;
+    -fx-background-radius: 5;
+}
+.main-scroll-pane .scroll-bar:vertical .thumb:hover { -fx-background-color: #a0a0a0; }

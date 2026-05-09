@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            style="-fx-background-color: transparent; -fx-background: transparent;"
+            stylesheets="@../css/customTheme.css"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.offres.EnterprisePortalController">
+
+    <VBox alignment="CENTER" spacing="0.0"
+          style="-fx-background-color: -color-bg-subtle;">
+
+        <!-- ENHANCED HERO BLOCK -->
+        <StackPane prefHeight="280.0" style="-fx-background-color: linear-gradient(to bottom right, -color-accent-7, -color-accent-5, -color-accent-4); -fx-background-radius: 0;">
+            <VBox.margin>
+                <Insets left="0" right="0" top="0"/>
+            </VBox.margin>
+
+            <VBox alignment="CENTER" spacing="12.0">
+                <padding>
+                    <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
+                </padding>
+
+                <Label text="Nos Partenaires"
+                       style="-fx-font-size: 38px; -fx-font-weight: 900; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);"
+                       textAlignment="CENTER"
+                       wrapText="true"/>
+
+                <Label text="Découvrez les entreprises qui nous font confiance et qui utilisent nos services."
+                       style="-fx-font-size: 16px; -fx-text-fill: rgba(255,255,255,0.95); -fx-font-weight: normal;"
+                       textAlignment="CENTER"
+                       wrapText="true">
+                    <padding>
+                        <Insets top="5.0"/>
+                    </padding>
+                </Label>
+            </VBox>
+        </StackPane>
+
+        <!-- RESULTS SUMMARY -->
+        <VBox maxWidth="1050.0" alignment="CENTER_LEFT" spacing="8.0">
+            <padding>
+                <Insets top="50.0" bottom="15.0" left="20.0" right="20.0"/>
+            </padding>
+            <children>
+                <Label fx:id="lblCount"
+                       style="-fx-font-weight: bold; -fx-font-size: 22; -fx-text-fill: -color-fg-default;"
+                       text="0 entreprise(s) partenaire(s)" />
+            </children>
+        </VBox>
+
+        <!-- ENTERPRISES GRID -->
+        <FlowPane fx:id="enterprisesGrid"
+                  alignment="TOP_LEFT"
+                  hgap="20.0"
+                  vgap="20.0"
+                  maxWidth="1050.0"
+                  prefWidth="1050.0"
+                  style="-fx-background-color: transparent;">
+            <padding>
+                <Insets bottom="50.0" left="20.0" right="20.0" top="5.0" />
+            </padding>
+        </FlowPane>
+
+    </VBox>
+</ScrollPane>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="600.0" prefWidth="520.0" style="-fx-background-color: -color-base-0;" stylesheets="@customTheme.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.formations.inscription_formationController">
+    <children>
+        <!-- ScrollPane pour permettre le défilement -->
+        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+            <content>
+                <VBox spacing="20.0">
+                    <padding>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                    </padding>
+                    <children>
+        <!-- Header amélioré avec gradient -->
+        <VBox spacing="10.0" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 3);">
+            <children>
+                <Label style="-fx-font-weight: bold; -fx-font-size: 24px; -fx-text-fill: white;" text="✏️ Inscription à la Formation" />
+                <Label text="Confirmez votre participation à cette formation" style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 13px;" />
+            </children>
+        </VBox>
+
+        <!-- Formation Details avec style amélioré -->
+        <VBox spacing="15.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #f5f7fa 0%, #c3cfe2 100%); -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+            <children>
+                <Label style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #2c3e50;" text="📚 Détails de la Formation" />
+
+                <HBox spacing="10.0">
+                    <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #34495e;" text="📌 Titre:" />
+                        <Label fx:id="lblTitre" text="-" style="-fx-text-fill: #2c3e50;" />
+                    </children>
+                </HBox>
+
+                <HBox spacing="10.0">
+                    <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #34495e;" text="🏢 Organisme:" />
+                        <Label fx:id="lblOrganisme" text="-" style="-fx-text-fill: #2c3e50;" />
+                    </children>
+                </HBox>
+
+                <HBox spacing="10.0">
+                    <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #34495e;" text="📅 Dates:" />
+                        <Label fx:id="lblDates" text="-" style="-fx-text-fill: #2c3e50;" />
+                    </children>
+                </HBox>
+
+                <HBox spacing="10.0">
+                    <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #34495e;" text="📍 Lieu:" />
+                        <Label fx:id="lblLieu" text="-" style="-fx-text-fill: #2c3e50;" />
+                    </children>
+                </HBox>
+
+                <HBox spacing="10.0">
+                    <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #34495e;" text="👥 Capacité:" />
+                        <Label fx:id="lblCapacite" text="-" style="-fx-text-fill: #2c3e50;" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Employee Info avec style moderne -->
+        <VBox spacing="12.0">
+            <children>
+                <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="👤 Informations du Participant" />
+
+                <HBox spacing="10.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e3f2fd 0%, #bbdefb 100%); -fx-background-radius: 8; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 5, 0, 0, 1);">
+                    <children>
+                        <Label style="-fx-font-weight: 600; -fx-text-fill: #1976d2;" text="✓ Employé connecté:" />
+                        <Label fx:id="lblEmployeConnecte" text="-" style="-fx-text-fill: #0d47a1; -fx-font-weight: bold;" />
+                    </children>
+                </HBox>
+
+                <VBox spacing="8.0">
+                    <children>
+                        <Label text="📊 Statut de l'inscription" style="-fx-font-size: 13px; -fx-font-weight: 500;" />
+                        <ComboBox fx:id="comboStatut" disable="true" maxWidth="Infinity" style="-fx-background-color: #f5f5f5; -fx-opacity: 0.8;" />
+                    </children>
+                </VBox>
+
+                <VBox spacing="8.0">
+                    <children>
+                        <HBox spacing="10.0" alignment="CENTER_LEFT">
+                            <children>
+                                <Label text="✍️ Raison de l'inscription" style="-fx-font-size: 13px; -fx-font-weight: 500;" />
+                                <HBox HBox.hgrow="ALWAYS" />
+                                <Button fx:id="btnCorrectSpelling" text="🔤 Corriger" onAction="#handleCorrectSpelling" style="-fx-font-size: 10px; -fx-padding: 3 8; -fx-background-color: #e3f2fd; -fx-text-fill: #1976d2; -fx-border-color: #1976d2; -fx-border-radius: 4; -fx-background-radius: 4; -fx-cursor: hand;" />
+                                <Button fx:id="btnGenerateText" text="✨ Aide IA" onAction="#handleGenerateText" style="-fx-font-size: 10px; -fx-padding: 3 8; -fx-background-color: #f3e5f5; -fx-text-fill: #7b1fa2; -fx-border-color: #7b1fa2; -fx-border-radius: 4; -fx-background-radius: 4; -fx-cursor: hand;" />
+                            </children>
+                        </HBox>
+                        <Label text="Expliquez pourquoi vous souhaitez suivre cette formation (français ou anglais - notre IA analysera votre motivation)" style="-fx-font-size: 11px; -fx-text-fill: #666;" />
+                        <TextArea fx:id="txtRaison" prefHeight="80.0" promptText="Ex: Je souhaite développer mes compétences en... / I want to develop my skills in..." style="-fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" wrapText="true" />
+
+                        <!-- 🤖 ANALYSE IA EN TEMPS RÉEL -->
+                        <HBox fx:id="aiAnalysisBox" spacing="10.0" visible="false" managed="false" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #fff3e0 0%, #ffe0b2 100%); -fx-background-radius: 8; -fx-padding: 12; -fx-border-color: #ffb74d; -fx-border-width: 1; -fx-border-radius: 8;">
+                            <children>
+                                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <HBox spacing="8.0">
+                                            <children>
+                                                <Label text="🤖 Analyse IA:" style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #e65100;" />
+                                                <Label fx:id="lblAiScore" text="0%" style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #f57c00;" />
+                                            </children>
+                                        </HBox>
+                                        <Label fx:id="lblAiFeedback" text="En attente..." style="-fx-font-size: 11px; -fx-text-fill: #5d4037;" wrapText="true" />
+                                        <Label fx:id="lblAiCategory" text="" style="-fx-font-size: 10px; -fx-text-fill: #6d4c41; -fx-font-style: italic;" wrapText="true" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <!-- 💡 SUGGESTIONS IA -->
+                        <VBox fx:id="suggestionsBox" spacing="3.0" visible="false" managed="false" style="-fx-background-color: #e8f5e9; -fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #4caf50; -fx-border-width: 1; -fx-border-radius: 5;">
+                            <children>
+                                <Label fx:id="lblSuggestions" text="" wrapText="true" style="-fx-font-size: 10px; -fx-text-fill: #2e7d32;" />
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+
+                        <!-- Action Buttons avec meilleur design -->
+                        <VBox spacing="12.0">
+                            <children>
+                                <Button fx:id="btnInscrire" maxWidth="Infinity" onAction="#handleInscription" prefHeight="45.0" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 8; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);" text="✓ Confirmer l'Inscription" />
+                                <Button fx:id="btnAnnuler" maxWidth="Infinity" onAction="#handleAnnuler" prefHeight="38.0" style="-fx-background-color: transparent; -fx-border-color: #95a5a6; -fx-border-width: 1.5; -fx-text-fill: #7f8c8d; -fx-font-weight: 500; -fx-background-radius: 8; -fx-border-radius: 8; -fx-cursor: hand;" text="✗ Annuler" />
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </children>
+</VBox>
+

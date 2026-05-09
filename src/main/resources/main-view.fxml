@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="rootPane" prefHeight="573.0" prefWidth="918.0" stylesheets="@css/customTheme.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
+    <left>
+        <VBox fx:id="sidebar" prefWidth="68.0" styleClass="sidebar" BorderPane.alignment="CENTER" >
+            <children>
+                <!-- Toggle Menu Button -->
+                <Button fx:id="btnToggle" maxWidth="Infinity" onAction="#handleToggleSidebar" styleClass="nav-button, logo-button">
+                    <graphic>
+                        <HBox alignment="CENTER_LEFT" spacing="20">
+                            <ImageView fitHeight="22" fitWidth="22" preserveRatio="true">
+                                <image>
+                                    <Image url="@icons/logo.png" />
+                                </image>
+                        <effect>
+                           <Blend />
+                        </effect>
+                            </ImageView>
+                            <Label style="-fx-font-weight: bold;" styleClass="nav-label" text="Momentum" />
+                        </HBox>
+                    </graphic>
+                    <VBox.margin>
+                        <Insets bottom="20.0" top="10.0" />
+                    </VBox.margin>
+                </Button>
+                <VBox spacing="10.0">
+                    <children>
+                        <!-- HOME -->
+                        <Button fx:id="btnHome" maxWidth="Infinity" onAction="#showHome" styleClass="nav-button, nav-active">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="20">
+                                    <children>
+                                        <StackPane maxWidth="25" minWidth="25">
+                                            <ImageView fitHeight="22" fitWidth="22" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@icons/home.png" />
+                                                </image>
+                                            </ImageView>
+                                        </StackPane>
+                                        <Label styleClass="nav-label" text="Home" />
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                        <!-- FORMATIONS -->
+                        <Button fx:id="btnFormation" maxWidth="Infinity" onAction="#showFormation" styleClass="nav-button">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="20">
+                                    <children>
+                                        <StackPane maxWidth="25" minWidth="25">
+                                            <ImageView fitHeight="22" fitWidth="22" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@icons/edit.png" />
+                                                </image>
+                                            </ImageView>
+                                        </StackPane>
+                                        <Label styleClass="nav-label" text="Formations" />
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                        <!-- DEMANDE -->
+                        <Button fx:id="btnDemande" maxWidth="Infinity" onAction="#showDemande" styleClass="nav-button">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="20">
+                                    <children>
+                                        <!-- Wrap Icon in a fixed-width StackPane -->
+                                        <StackPane maxWidth="25" minWidth="25">
+                                            <ImageView fitHeight="22" fitWidth="22" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@icons/send.png" />
+                                                </image>
+                                            </ImageView>
+                                        </StackPane>
+                                        <Label styleClass="nav-label" text="Demandes" />
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                        <!-- EMPLOYER -->
+                        <Button fx:id="btnEmployer" maxWidth="Infinity" onAction="#showEmployer" styleClass="nav-button">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="20">
+                                    <children>
+                                        <!-- Wrap Icon in a fixed-width StackPane -->
+                                        <StackPane maxWidth="25" minWidth="25">
+                                            <ImageView fitHeight="22" fitWidth="22" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@icons/users.png" />
+                                                </image>
+                                            </ImageView>
+                                        </StackPane>
+                                        <Label styleClass="nav-label" text="Utilisateurs" />
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                        <!-- PROJECTS -->
+                        <Button fx:id="btnProjet" maxWidth="Infinity" onAction="#showProjet" styleClass="nav-button">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="20">
+                                    <children>
+                                        <StackPane maxWidth="25" minWidth="25">
+                                            <ImageView fitHeight="22" fitWidth="22" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@icons/layout.png" />
+                                                </image>
+                                            </ImageView>
+                                        </StackPane>
+                                        <Label styleClass="nav-label" text="Projets" />
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                        <!-- Offres -->
+                        <Button fx:id="btnOffre" maxWidth="Infinity" onAction="#showOffres" styleClass="nav-button">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="20">
+                                    <children>
+                                        <StackPane maxWidth="25" minWidth="25">
+                                            <ImageView fitHeight="22" fitWidth="22" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@icons/share.png" />
+                                                </image>
+                                            </ImageView>
+                                        </StackPane>
+                                        <Label styleClass="nav-label" text="Offres d'emploi" />
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <StackPane fx:id="contentArea" BorderPane.alignment="CENTER">
+        </StackPane>
+    </center>
+</BorderPane>

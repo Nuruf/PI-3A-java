@@ -1,0 +1,6 @@
+# Hugging Face API Configuration Template
+# Copy this file to config.properties and fill in your actual values
+
+huggingface.api.url=YOUR_HUGGINGFACE_API_URL_HERE
+huggingface.api.token=YOUR_HUGGINGFACE_API_TOKEN_HERE
+

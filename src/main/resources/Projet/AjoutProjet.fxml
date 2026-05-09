@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.projets.AjoutProjetController"
+            prefWidth="780" prefHeight="620"
+            style="-fx-background-color: #F8FAFC;">
+
+    <top>
+        <VBox style="-fx-background-color: linear-gradient(to right, #4F46E5, #7C3AED); -fx-padding: 20;">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <VBox spacing="4">
+                    <Label fx:id="formTitle" text="✨ Nouveau Projet" style="-fx-font-size:22px; -fx-font-weight:800; -fx-text-fill: white;"/>
+                    <Label text="Créez un nouveau projet et constituez votre équipe" style="-fx-text-fill: rgba(255,255,255,0.8); -fx-font-size: 13px;"/>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="✕ Annuler" onAction="#onCancel" fx:id="btnCancel"
+                        style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;"/>
+                <Button text="💾 Enregistrer" onAction="#onSave" fx:id="btnSave"
+                        style="-fx-background-color: white; -fx-text-fill: #4F46E5; -fx-font-weight: 700; -fx-background-radius: 8; -fx-cursor: hand;"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-background: transparent;">
+            <content>
+                <VBox spacing="20" style="-fx-padding: 24;">
+
+                    <!-- Project Info Card -->
+                    <VBox spacing="16" style="-fx-background-color: white; -fx-background-radius: 16; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);">
+                        <Label text="📋 Informations du projet" style="-fx-font-size:16px; -fx-font-weight:700; -fx-text-fill: #1E293B;"/>
+
+                        <VBox spacing="6">
+                            <Label text="Nom du projet *" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                            <TextField fx:id="nomField" promptText="Ex: Migration système RH"
+                                       style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #E2E8F0; -fx-padding: 12;"/>
+                        </VBox>
+
+                        <VBox spacing="6">
+                            <Label text="Description *" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                            <TextArea fx:id="descArea" promptText="Décrivez les objectifs, livrables et contexte du projet..."
+                                      prefRowCount="3" wrapText="true"
+                                      style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #E2E8F0;"/>
+                        </VBox>
+
+                        <HBox spacing="16">
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="📅 Date début *" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                <DatePicker fx:id="debutPicker" maxWidth="Infinity" style="-fx-background-radius: 8;"/>
+                            </VBox>
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="📅 Date fin prévue" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                <DatePicker fx:id="finPrevuePicker" maxWidth="Infinity" style="-fx-background-radius: 8;"/>
+                            </VBox>
+                        </HBox>
+
+                        <HBox spacing="16">
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="📊 Statut" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                <ComboBox fx:id="statutBox" maxWidth="Infinity" promptText="Sélectionner..." style="-fx-background-radius: 8;"/>
+                            </VBox>
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="🎯 Priorité" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                <ComboBox fx:id="prioriteBox" maxWidth="Infinity" promptText="Sélectionner..." style="-fx-background-radius: 8;"/>
+                            </VBox>
+                        </HBox>
+
+                        <VBox spacing="6">
+                            <Label text="👤 Responsable du projet *" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                            <ComboBox fx:id="responsableBox" maxWidth="Infinity" promptText="Sélectionner le chef de projet..." style="-fx-background-radius: 8;"/>
+                        </VBox>
+                    </VBox>
+
+                    <!-- Team Card -->
+                    <VBox spacing="16" style="-fx-background-color: white; -fx-background-radius: 16; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label text="👥 Équipe du projet" style="-fx-font-size:16px; -fx-font-weight:700; -fx-text-fill: #1E293B;"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="infoLabel" text="0 sélectionné(s)" style="-fx-text-fill: #64748B; -fx-font-size: 13px;"/>
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <TextField fx:id="empSearchField" promptText="🔍 Rechercher un employé..." HBox.hgrow="ALWAYS"
+                                       style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #E2E8F0; -fx-padding: 10;"/>
+                            <Button fx:id="btnSelectAll" text="✓ Tout"
+                                    style="-fx-background-color: #DBEAFE; -fx-text-fill: #1D4ED8; -fx-background-radius: 8; -fx-cursor: hand;"/>
+                            <Button fx:id="btnClearAll" text="✕ Aucun"
+                                    style="-fx-background-color: #FEE2E2; -fx-text-fill: #DC2626; -fx-background-radius: 8; -fx-cursor: hand;"/>
+                        </HBox>
+
+                        <ListView fx:id="teamListView" prefHeight="180"
+                                  style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #E2E8F0;"/>
+                    </VBox>
+
+                    <!-- Error Label -->
+                    <Label fx:id="errorLabel" visible="false" managed="false"
+                           style="-fx-background-color: #FEF2F2; -fx-text-fill: #DC2626; -fx-padding: 12; -fx-background-radius: 8; -fx-font-weight: 600;"/>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

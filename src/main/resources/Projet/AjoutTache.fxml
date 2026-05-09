@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.projets.AjoutTacheController"
+            prefWidth="560" prefHeight="680"
+            style="-fx-background-color: #F8FAFC;">
+
+    <children>
+        <VBox spacing="0" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+              AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+
+            <!-- Header -->
+            <VBox style="-fx-background-color: linear-gradient(to right, #059669, #10B981); -fx-padding: 18;">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <VBox spacing="2">
+                        <Label fx:id="modalTitle" text="📝 Nouvelle tâche" style="-fx-font-size:20px; -fx-font-weight:800; -fx-text-fill: white;"/>
+                        <Label text="Assignez une tâche à un membre de l'équipe" style="-fx-text-fill: rgba(255,255,255,0.85); -fx-font-size: 12px;"/>
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="✕" fx:id="btnClose" focusTraversable="false"
+                            style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 50; -fx-min-width: 32; -fx-min-height: 32; -fx-cursor: hand;"/>
+                </HBox>
+            </VBox>
+
+            <!-- Content -->
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-background: transparent;">
+                <content>
+                    <VBox spacing="16" style="-fx-padding: 20;">
+
+                        <!-- Task Info -->
+                        <VBox spacing="6">
+                            <Label text="Titre de la tâche *" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                            <TextField fx:id="titleField" promptText="Ex: Préparer le rapport mensuel..."
+                                       style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #E2E8F0; -fx-padding: 12;"/>
+                        </VBox>
+
+                        <VBox spacing="6">
+                            <HBox alignment="CENTER_LEFT" spacing="8">
+                                <Label text="Description" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="btnAIDescription" text="✨ Générer (Gemini)"
+                                        style="-fx-background-color: linear-gradient(to right, #4285F4, #34A853); -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 4 10; -fx-cursor: hand; -fx-font-size: 10px; -fx-font-weight: 600;"/>
+                            </HBox>
+                            <TextArea fx:id="descArea" promptText="Décrivez les détails de la tâche..."
+                                      wrapText="true" prefRowCount="3"
+                                      style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #E2E8F0;"/>
+                        </VBox>
+
+                        <HBox spacing="16">
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="📊 Statut" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                <ComboBox fx:id="statusBox" maxWidth="Infinity" promptText="Statut"
+                                          style="-fx-background-radius: 8;"/>
+                            </VBox>
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="👤 Assigné à *" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                <ComboBox fx:id="employeeBox" maxWidth="Infinity" promptText="Employé"
+                                          style="-fx-background-radius: 8;"/>
+                            </VBox>
+                        </HBox>
+
+                        <!-- AI Workload Suggestion Box -->
+                        <VBox fx:id="suggestionBox" spacing="10" visible="false" managed="false"
+                              style="-fx-background-color: linear-gradient(to right, #EEF2FF, #E0E7FF); -fx-background-radius: 12; -fx-padding: 14; -fx-border-color: #818CF8; -fx-border-radius: 12; -fx-border-width: 1;">
+                            <HBox alignment="CENTER_LEFT" spacing="8">
+                                <Label text="🤖 Smart Workload Balancing" style="-fx-font-weight: 700; -fx-text-fill: #4338CA; -fx-font-size: 13px;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label text="API" style="-fx-background-color: #4338CA; -fx-text-fill: white; -fx-padding: 2 8; -fx-background-radius: 10; -fx-font-size: 10px; -fx-font-weight: 700;"/>
+                            </HBox>
+                            <Label fx:id="suggestionLabel" text="" wrapText="true"
+                                   style="-fx-text-fill: #1E1B4B; -fx-font-size: 12px;"/>
+                            <HBox spacing="8">
+                                <Button fx:id="btnApplySuggestion" text="✓ Appliquer"
+                                        style="-fx-background-color: #4338CA; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 6 14; -fx-cursor: hand; -fx-font-size: 11px;"/>
+                                <Button fx:id="btnViewWorkload" text="📊 Voir détails"
+                                        style="-fx-background-color: white; -fx-text-fill: #4338CA; -fx-background-radius: 6; -fx-padding: 6 14; -fx-cursor: hand; -fx-font-size: 11px; -fx-border-color: #4338CA; -fx-border-radius: 6;"/>
+                            </HBox>
+                        </VBox>
+
+                        <HBox spacing="16">
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="📅 Date début" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                <DatePicker fx:id="startPicker" maxWidth="Infinity" style="-fx-background-radius: 8;"/>
+                            </VBox>
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="📅 Date limite" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                <DatePicker fx:id="duePicker" maxWidth="Infinity" style="-fx-background-radius: 8;"/>
+                            </VBox>
+                        </HBox>
+
+                        <HBox spacing="16">
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <HBox alignment="CENTER_LEFT" spacing="8">
+                                    <Label text="🎯 Priorité" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button fx:id="btnAIPriority" text="✨ Suggérer"
+                                            style="-fx-background-color: linear-gradient(to right, #4285F4, #34A853); -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 4 10; -fx-cursor: hand; -fx-font-size: 10px; -fx-font-weight: 600;"/>
+                                </HBox>
+                                <ComboBox fx:id="priorityBox" maxWidth="Infinity" promptText="Priorité"
+                                          style="-fx-background-radius: 8;"/>
+                            </VBox>
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="📈 Progression (%)" style="-fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                                <Spinner fx:id="progressSpinner" maxWidth="Infinity" style="-fx-background-radius: 8;"/>
+                            </VBox>
+                        </HBox>
+
+                        <Label fx:id="infoLabel" text=""
+                               style="-fx-text-fill: #DC2626; -fx-font-weight: 600; -fx-padding: 8; -fx-background-color: #FEF2F2; -fx-background-radius: 8;"
+                               visible="false" managed="false"/>
+                    </VBox>
+                </content>
+            </ScrollPane>
+
+            <!-- Footer Actions -->
+            <HBox spacing="12" style="-fx-padding: 16; -fx-background-color: white; -fx-border-color: #E2E8F0; -fx-border-width: 1 0 0 0;">
+                <Button fx:id="btnCancel" text="Annuler" HBox.hgrow="ALWAYS" maxWidth="Infinity"
+                        style="-fx-background-color: #F1F5F9; -fx-text-fill: #475569; -fx-background-radius: 8; -fx-padding: 12; -fx-cursor: hand;"/>
+                <Button fx:id="btnSave" text="💾 Créer la tâche" defaultButton="true" HBox.hgrow="ALWAYS" maxWidth="Infinity"
+                        style="-fx-background-color: #059669; -fx-text-fill: white; -fx-font-weight: 700; -fx-background-radius: 8; -fx-padding: 12; -fx-cursor: hand;"/>
+            </HBox>
+
+        </VBox>
+    </children>
+</AnchorPane>

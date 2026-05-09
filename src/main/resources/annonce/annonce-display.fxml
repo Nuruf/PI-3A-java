@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane fx:id="rootPane" prefHeight="700.0" prefWidth="1100.0" stylesheets="@../css/customTheme.css"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.evenements.AnnonceDisplayController">
+
+<center>
+    <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+        <VBox spacing="0" style="-fx-background-color: #f3f2ef;" alignment="TOP_CENTER">
+
+            <VBox style="-fx-background-color: white; -fx-border-color: #e0ddd8; -fx-border-width: 0 0 1 0;"
+                  maxWidth="680" prefWidth="680">
+                <padding>
+                    <Insets top="25" right="30" bottom="25" left="30"/>
+                </padding>
+
+                <HBox alignment="CENTER_LEFT" spacing="20">
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label text="Fil d'actualité" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: -color-fg-default;"/>
+                        <Label text="Restez informé des dernières annonces de l'entreprise" style="-fx-font-size: 14px; -fx-text-fill: -color-fg-muted;"/>
+                    </VBox>
+
+                    <ComboBox fx:id="comboFilter" promptText="Tous" prefWidth="140"
+                              style="-fx-background-color: -color-base-0; -fx-background-radius: 8; -fx-border-color: -color-border-muted; -fx-border-radius: 8; -fx-border-width: 1; -fx-padding: 8 16;"/>
+                </HBox>
+            </VBox>
+
+            <VBox fx:id="postsContainer" spacing="20" style="-fx-padding: 24 0;"
+                  maxWidth="680" prefWidth="680"/>
+        </VBox>
+    </ScrollPane>
+</center>
+
+</BorderPane>

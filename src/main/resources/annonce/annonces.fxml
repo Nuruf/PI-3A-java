@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.chart.*?>
+
+<BorderPane fx:id="rootPane" prefHeight="700.0" prefWidth="1100.0" stylesheets="@../css/customTheme.css"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.evenements.AnnonceAdminController">
+
+<center>
+    <VBox>
+        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 25 30; -fx-background-color: -color-base-0; -fx-border-color: -color-border-muted; -fx-border-width: 0 0 1 0;">
+            <Label text="Administration" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: -color-fg-default;"/>
+        </HBox>
+
+        <TabPane fx:id="mainTabPane" VBox.vgrow="ALWAYS" styleClass="custom-tab-pane" tabClosingPolicy="UNAVAILABLE">
+
+            <!-- TAB 1: GESTION DES POSTS -->
+            <Tab text="Posts" closable="false">
+                <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+                    <VBox spacing="25" style="-fx-padding: 30; -fx-background-color: -color-bg-subtle;">
+
+                        <VBox spacing="20" style="-fx-background-color: -color-base-0; -fx-padding: 25; -fx-background-radius: 15; -fx-border-color: -color-border-muted; -fx-border-radius: 15;">
+                            <HBox alignment="CENTER_LEFT" spacing="20">
+                                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                    <Label text="Gestion des Annonces" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: -color-fg-default;"/>
+                                    <Label text="Créez et gérez les annonces et événements" style="-fx-font-size: 13px; -fx-text-fill: -color-fg-muted;"/>
+                                </VBox>
+
+                                <Button fx:id="btnAjouter" onAction="#handleShowAddForm" prefHeight="35" styleClass="accent" text="+ Créer une Annonce"/>
+                            </HBox>
+
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <TextField fx:id="txtRecherchePost" promptText="Rechercher par titre ou contenu..."
+                                           prefWidth="350" prefHeight="35"/>
+
+                                <Button onAction="#rechercherPosts" prefHeight="35" styleClass="accent" text="Rechercher"/>
+
+                                <Region HBox.hgrow="ALWAYS"/>
+
+                                <Label text="Filtrer:" style="-fx-font-weight: 600; -fx-text-fill: -color-fg-muted;"/>
+
+                                <ComboBox onAction="#showAll" promptText="Tous" prefHeight="35"/>
+                                <ComboBox onAction="#filterAnnonces" promptText="Annonces" prefHeight="35"/>
+                                <ComboBox onAction="#filterEvents" promptText="Événements" prefHeight="35"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox fx:id="formContainer" managed="false" visible="false" spacing="20"
+                              style="-fx-background-color: -color-base-0; -fx-padding: 25; -fx-background-radius: 15; -fx-border-color: -color-border-muted; -fx-border-radius: 15;">
+
+                            <Label fx:id="formTitle" text="Ajouter une Annonce"
+                                   style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: -color-fg-default;"/>
+
+                            <VBox spacing="5">
+                                <Label text="Titre *" style="-fx-font-weight: 600; -fx-text-fill: -color-fg-default;"/>
+                                <TextField fx:id="txtTitre" promptText="Entrez le titre" prefHeight="35"/>
+                                <Label fx:id="lblTitreError" styleClass="error-label" visible="false" managed="false"/>
+                            </VBox>
+
+                            <VBox spacing="5">
+                                <Label text="Contenu *" style="-fx-font-weight: 600; -fx-text-fill: -color-fg-default;"/>
+                                <TextArea fx:id="txtContenu" prefRowCount="4" promptText="Entrez le contenu" wrapText="true"/>
+                                <Label fx:id="lblContenuError" styleClass="error-label" visible="false" managed="false"/>
+                            </VBox>
+
+                            <HBox spacing="20">
+                                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                    <Label text="Type *" style="-fx-font-weight: 600; -fx-text-fill: -color-fg-default;"/>
+                                    <ComboBox fx:id="comboTypePost" promptText="Sélectionnez" prefHeight="35" maxWidth="Infinity"/>
+                                    <Label fx:id="lblTypeError" styleClass="error-label" visible="false" managed="false"/>
+                                </VBox>
+
+                                <VBox spacing="5" alignment="CENTER_LEFT">
+                                    <Label text=" "/>
+                                    <CheckBox fx:id="chkActive" text="Annonce active" selected="true" style="-fx-font-weight: 600;"/>
+                                </VBox>
+                            </HBox>
+
+                            <VBox fx:id="eventFieldsContainer" spacing="15" managed="false" visible="false">
+                                <Separator style="-fx-background-color: -color-border-muted;"/>
+                                <Label text="Informations Événement" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: -color-fg-default;"/>
+
+                                <HBox spacing="15">
+                                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                        <Label text="Date début" style="-fx-font-weight: 600;"/>
+                                        <DatePicker fx:id="dateEvenement" promptText="Date" maxWidth="Infinity" prefHeight="35"/>
+                                    </VBox>
+
+                                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                        <Label text="Date fin" style="-fx-font-weight: 600;"/>
+                                        <DatePicker fx:id="dateFinEvenement" promptText="Date fin" maxWidth="Infinity" prefHeight="35"/>
+                                    </VBox>
+                                </HBox>
+
+                                <HBox spacing="15">
+                                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                        <Label text="Lieu" style="-fx-font-weight: 600;"/>
+                                        <HBox spacing="8">
+                                            <TextField fx:id="txtLieu" promptText="Tapez une ville ou adresse..." prefHeight="35" HBox.hgrow="ALWAYS"/>
+                                            <Button onAction="#ouvrirCarte" prefHeight="35" prefWidth="38"
+                                                    style="-fx-background-color: #0a66c2; -fx-background-radius: 8; -fx-cursor: hand;">
+                                                <graphic>
+                                                    <Label text="🗺" style="-fx-font-size: 16px;"/>
+                                                </graphic>
+                                            </Button>
+                                        </HBox>
+                                        <ListView fx:id="suggestionListView" maxHeight="160" visible="false" managed="false"
+                                                  style="-fx-background-color: white; -fx-border-color: #d1d5db; -fx-border-width: 1; -fx-background-radius: 6; -fx-border-radius: 6; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 8, 0, 0, 3);"/>
+                                    </VBox>
+
+                                    <VBox spacing="5">
+                                        <Label text="Capacité max" style="-fx-font-weight: 600;"/>
+                                        <TextField fx:id="txtCapaciteMax" promptText="Ex: 50" prefWidth="150" prefHeight="35"/>
+                                        <Label fx:id="lblCapaciteError" styleClass="error-label" visible="false" managed="false"/>
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+
+                            <HBox spacing="15" alignment="CENTER_RIGHT">
+                                <Button fx:id="btnSave" onAction="#handleSave" text="Enregistrer" prefHeight="40" styleClass="accent" HBox.hgrow="ALWAYS" maxWidth="150"/>
+                                <Button fx:id="btnUpdate" onAction="#handleUpdate" text="Modifier" visible="false" managed="false" prefHeight="40" styleClass="accent" HBox.hgrow="ALWAYS" maxWidth="150"/>
+                                <Button onAction="#handleCancelForm" text="Annuler" prefHeight="40" styleClass="outline" maxWidth="150"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox fx:id="postsContainer" spacing="15"/>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- TAB 2: COMMENTAIRES -->
+            <Tab text="Commentaires" closable="false">
+                <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+                    <VBox spacing="25" style="-fx-padding: 30; -fx-background-color: -color-bg-subtle;">
+
+                        <VBox spacing="15" style="-fx-background-color: -color-base-0; -fx-padding: 25; -fx-background-radius: 15; -fx-border-color: -color-border-muted; -fx-border-radius: 15;">
+                            <Label text="Commentaires par Post" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: -color-fg-default;"/>
+                            <Label text="Gérez les commentaires organisés par publication" style="-fx-font-size: 13px; -fx-text-fill: -color-fg-muted;"/>
+                        </VBox>
+
+                        <VBox fx:id="commentsContainer" spacing="15"/>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- TAB 3: STATISTIQUES -->
+            <Tab text="Statistiques" closable="false">
+                <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+                    <VBox spacing="25" style="-fx-padding: 30; -fx-background-color: -color-bg-subtle;">
+
+                        <VBox spacing="15" style="-fx-background-color: -color-base-0; -fx-padding: 25; -fx-background-radius: 15; -fx-border-color: -color-border-muted; -fx-border-radius: 15;">
+                            <Label text="Tableau de Bord" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: -color-fg-default;"/>
+                            <Label text="Vue d'ensemble des performances" style="-fx-font-size: 13px; -fx-text-fill: -color-fg-muted;"/>
+                        </VBox>
+
+                        <HBox spacing="15">
+                            <VBox spacing="8" style="-fx-background-color: white; -fx-padding: 20 24; -fx-background-radius: 12; -fx-border-color: #e0ddd8; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0, 0, 2);" HBox.hgrow="ALWAYS">
+                                <Label text="📄  Total Posts" style="-fx-font-size: 12px; -fx-font-weight: 700; -fx-text-fill: #697386;"/>
+                                <Label fx:id="lblTotalPosts" text="0" style="-fx-font-size: 36px; -fx-font-weight: 800; -fx-text-fill: #1a1f36;"/>
+                                <Label fx:id="lblPostsChange" text="" style="-fx-font-size: 12px; -fx-text-fill: #10b981;"/>
+                            </VBox>
+                            <VBox spacing="8" style="-fx-background-color: white; -fx-padding: 20 24; -fx-background-radius: 12; -fx-border-color: #e0ddd8; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0, 0, 2);" HBox.hgrow="ALWAYS">
+                                <Label text="❤️  Total Likes" style="-fx-font-size: 12px; -fx-font-weight: 700; -fx-text-fill: #697386;"/>
+                                <Label fx:id="lblTotalLikes" text="0" style="-fx-font-size: 36px; -fx-font-weight: 800; -fx-text-fill: #ef4444;"/>
+                                <Label fx:id="lblLikesChange" text="" style="-fx-font-size: 12px; -fx-text-fill: #10b981;"/>
+                            </VBox>
+                            <VBox spacing="8" style="-fx-background-color: white; -fx-padding: 20 24; -fx-background-radius: 12; -fx-border-color: #e0ddd8; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0, 0, 2);" HBox.hgrow="ALWAYS">
+                                <Label text="💬  Commentaires" style="-fx-font-size: 12px; -fx-font-weight: 700; -fx-text-fill: #697386;"/>
+                                <Label fx:id="lblTotalComments" text="0" style="-fx-font-size: 36px; -fx-font-weight: 800; -fx-text-fill: #0a66c2;"/>
+                                <Label fx:id="lblCommentsChange" text="" style="-fx-font-size: 12px; -fx-text-fill: #10b981;"/>
+                            </VBox>
+                            <VBox spacing="8" style="-fx-background-color: white; -fx-padding: 20 24; -fx-background-radius: 12; -fx-border-color: #e0ddd8; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0, 0, 2);" HBox.hgrow="ALWAYS">
+                                <Label text="✅  Participations" style="-fx-font-size: 12px; -fx-font-weight: 700; -fx-text-fill: #697386;"/>
+                                <Label fx:id="lblTotalParticipations" text="0" style="-fx-font-size: 36px; -fx-font-weight: 800; -fx-text-fill: #10b981;"/>
+                                <Label text="" style="-fx-font-size: 12px;"/>
+                            </VBox>
+                        </HBox>
+
+                        <!-- Row 2: Pie + Engagement Bar -->
+                        <HBox spacing="15">
+                            <VBox spacing="12" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12; -fx-border-color: #e0ddd8; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0, 0, 2);" prefWidth="280">
+                                <Label text="Répartition des Posts" style="-fx-font-size: 15px; -fx-font-weight: 700; -fx-text-fill: #1a1f36;"/>
+                                <PieChart fx:id="chartPostTypes" prefHeight="230" legendVisible="true"/>
+                            </VBox>
+
+                            <VBox spacing="12" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12; -fx-border-color: #e0ddd8; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0, 0, 2);" HBox.hgrow="ALWAYS">
+                                <Label text="Engagement par Post (Likes vs Commentaires)" style="-fx-font-size: 15px; -fx-font-weight: 700; -fx-text-fill: #1a1f36;"/>
+                                <Label text="Top 5 publications les plus actives" style="-fx-font-size: 12px; -fx-text-fill: #697386;"/>
+                                <BarChart fx:id="chartEngagement" prefHeight="230" legendVisible="true" animated="true">
+                                    <xAxis>
+                                        <CategoryAxis label="Publications" side="BOTTOM"/>
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Nombre" side="LEFT" minorTickCount="1"/>
+                                    </yAxis>
+                                </BarChart>
+                            </VBox>
+                        </HBox>
+
+                        <!-- Row 3: Participation rate line chart -->
+                        <VBox spacing="12" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12; -fx-border-color: #e0ddd8; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0, 0, 2);">
+                            <HBox alignment="CENTER_LEFT" spacing="12">
+                                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                    <Label text="Taux de Participation par Événement" style="-fx-font-size: 15px; -fx-font-weight: 700; -fx-text-fill: #1a1f36;"/>
+                                    <Label text="Participants confirmés (GOING) / Capacité maximale — en %" style="-fx-font-size: 12px; -fx-text-fill: #697386;"/>
+                                </VBox>
+                            </HBox>
+                            <LineChart fx:id="chartParticipation" prefHeight="260" legendVisible="false" animated="true" createSymbols="true">
+                                <xAxis>
+                                    <CategoryAxis label="Événements" side="BOTTOM"/>
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis label="Taux (%)" side="LEFT" lowerBound="0" upperBound="100" tickUnit="25" autoRanging="false"/>
+                                </yAxis>
+                            </LineChart>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+        </TabPane>
+    </VBox>
+</center>
+</BorderPane>

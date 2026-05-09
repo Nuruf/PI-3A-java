@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.employers.admin_sys.homeAdmin">
+
+    <VBox spacing="25"
+          AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+        <padding>
+            <Insets bottom="25" left="25" right="25" top="25"/>
+        </padding>
+
+        <HBox alignment="CENTER_LEFT" spacing="15">
+            <VBox HBox.hgrow="ALWAYS">
+                <Label fx:id="lblBienvenue" style="-fx-font-weight: bold; -fx-font-size: 24px;" text="Tableau de bord"/>
+                <Label fx:id="lblDate" text="" textFill="#6e6e6e"/>
+            </VBox>
+            <ComboBox fx:id="comboMois" prefHeight="35" prefWidth="200"
+                      promptText="Filtrer par mois"/>
+        </HBox>
+        <FlowPane hgap="15" vgap="15">
+            <padding>
+                <Insets top="-10"/>
+            </padding>
+            <VBox prefWidth="180" style="-fx-background-color: -color-bg-subtle;-fx-background-radius: 5;-fx-padding: 15;-fx-border-color: -color-border-muted;-fx-border-radius: 5;">
+                <Label text="Total" textFill="#868686"/>
+                <Label fx:id="lblTotal" style="-fx-font-size: 22; -fx-font-weight: bold;" text="0"/>
+                <Label fx:id="lblTotalSub" text="" style="-fx-font-size: 11px;"/>
+            </VBox>
+            <VBox prefWidth="180"
+                  style="-fx-background-color: -color-bg-subtle;-fx-background-radius: 5;-fx-padding: 15;-fx-border-color: -color-border-muted;-fx-border-radius: 5;">
+                <Label text="En attente" textFill="#868686"/>
+                <Label fx:id="lblEnAttente" style="-fx-font-size: 22; -fx-font-weight: bold;" text="0"/>
+                <Label fx:id="lblEnAttentePct" text="" style="-fx-font-size: 11px; -fx-text-fill: -color-warning-fg;"/>
+            </VBox>
+            <VBox prefWidth="180"
+                  style="-fx-background-color: -color-bg-subtle; -fx-background-radius: 5;-fx-padding: 15;-fx-border-color: -color-border-muted;-fx-border-radius: 5;">
+                <Label text="Acceptées" textFill="#868686"/>
+                <Label fx:id="lblAcceptees" style="-fx-font-size: 22; -fx-font-weight: bold;" text="0"/>
+                <Label fx:id="lblAccepteesPct" text="" style="-fx-font-size: 11px; -fx-text-fill: -color-success-fg;"/>
+            </VBox>
+            <VBox prefWidth="180"
+                  style="-fx-background-color: -color-bg-subtle;-fx-background-radius: 5;-fx-padding: 15;-fx-border-color: -color-border-muted;-fx-border-radius: 5;">
+                <Label text="Refusées" textFill="#868686"/>
+                <Label fx:id="lblRefusees" style="-fx-font-size: 22; -fx-font-weight: bold;" text="0"/>
+                <Label fx:id="lblRefuseesPct" text=""
+                       style="-fx-font-size: 11px; -fx-text-fill: -color-danger-fg;"/>
+            </VBox>
+
+            <VBox prefWidth="180"
+                  style="-fx-background-color: -color-bg-subtle;-fx-background-radius: 5;-fx-padding: 15;-fx-border-color: -color-accent-muted;-fx-border-radius: 5;">
+                <Label text="Taux d'acceptation" textFill="#868686"/>
+                <Label fx:id="lblTauxAcceptation" style="-fx-font-size: 22; -fx-font-weight: bold;-fx-text-fill: -color-accent-fg;"
+                       text="0%"/>
+                <Label fx:id="lblTauxSub" text="" style="-fx-font-size: 11px; -fx-text-fill: -color-accent-fg;"/>
+            </VBox>
+        </FlowPane>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;-fx-background: transparent;" VBox.vgrow="ALWAYS">
+
+            <VBox spacing="20">
+                <padding>
+                    <Insets right="10"/>
+                </padding>
+
+                <HBox spacing="15">
+
+                    <VBox HBox.hgrow="ALWAYS" style="-fx-background-color: -color-bg-subtle; -fx-background-radius: 5;-fx-border-color: -color-border-muted; -fx-border-radius: 5; -fx-padding: 15;">
+                        <Label fx:id="lblBarTitle" text="Demandes par statut" style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
+                        <BarChart fx:id="barChart" prefHeight="280" legendVisible="false" barGap="2" categoryGap="80">
+                            <xAxis>
+                                <CategoryAxis fx:id="barXAxis"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis fx:id="barYAxis" minorTickVisible="false"/>
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
+
+                    <!-- Courbe -->
+                    <VBox HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: -color-bg-subtle;-fx-background-radius: 5;-fx-border-color: -color-border-muted;-fx-border-radius: 5;-fx-padding: 15;">
+                        <Label fx:id="lblLineTitle" text="Acceptées par jour" style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
+                        <LineChart fx:id="lineChart" prefHeight="280" legendVisible="false" >
+                            <xAxis>
+                                <CategoryAxis fx:id="lineXAxis"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis fx:id="lineYAxis" minorTickVisible="false"/>
+                            </yAxis>
+                        </LineChart>
+                    </VBox>
+                </HBox>
+                <HBox spacing="15">
+                    <VBox HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: -color-bg-subtle;-fx-background-radius: 5;-fx-border-color: -color-border-muted;-fx-border-radius: 5;-fx-padding: 15;">
+                        <Label fx:id="lblPaysTitle" text="Entreprises par pays" style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
+                        <HBox spacing="20" alignment="CENTER">
+                            <PieChart fx:id="pieChartPays" prefHeight="280" prefWidth="400" labelsVisible="false" legendVisible="false"/>
+                            <VBox fx:id="legendePays" spacing="8" alignment="CENTER_LEFT" style="-fx-padding: 10;"/>
+                        </HBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </VBox>
+</AnchorPane>

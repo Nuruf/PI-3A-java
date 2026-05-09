@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="700.0"
+            prefWidth="1000.0"
+            stylesheets="@../css/customTheme.css"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.offres.RecrutementController">
+
+    <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" >
+        <tabs>
+            <Tab text="Offres d'Emploi">
+                <fx:include source="offre.fxml"/>
+            </Tab>
+
+            <Tab text="Candidatures" onSelectionChanged="#refreshCandidatTab">
+                <fx:include source="candidat.fxml" fx:id="candidatTab"/>
+            </Tab>
+
+            <Tab text="Statistiques">
+                <fx:include source="recrutementStat.fxml" fx:id="statisticsTab"/>
+            </Tab>
+        </tabs>
+    </TabPane>
+</AnchorPane>

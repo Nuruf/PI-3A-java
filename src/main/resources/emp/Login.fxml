@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane prefHeight="750.0" prefWidth="1200.0" minHeight="750.0" minWidth="1200.0"
+            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.employers.login">
+    <StackPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0" style="-fx-background-color: #f4f7f6;">
+        <padding>
+            <Insets top="30" right="30" bottom="30" left="30"/>
+        </padding>
+        <children>
+            <VBox alignment="TOP_CENTER" spacing="14.0" prefWidth="440.0" prefHeight="520.0" maxWidth="440.0"
+                  maxHeight="520.0"
+                  style="-fx-background-color: white;-fx-background-radius: 16;-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.12), 14, 0, 0, 8);">
+                <padding>
+                    <Insets top="50" right="40" bottom="26" left="40"/>
+                </padding>
+
+                <children>
+
+                    <ImageView fitHeight="200.0" fitWidth="280.0" preserveRatio="true">
+                        <image>
+                            <Image url="@/images/wordMarkLogo.png"/>
+                        </image>
+
+                        <VBox.margin>
+                            <Insets bottom="20"/>
+                        </VBox.margin>
+                    </ImageView>
+                    <Label text="Accédez à votre espace entreprise" textFill="#6b7280">
+                        <font>
+                            <Font size="12.0"/>
+                        </font>
+                        <VBox.margin>
+                            <Insets bottom="10"/>
+                        </VBox.margin>
+                    </Label>
+                    <TextField fx:id="textFieldEmail" promptText="E-mail" prefHeight="42.0"/>
+                    <PasswordField fx:id="passwordField" promptText="Mot de passe" prefHeight="42.0"/>
+                    <Label fx:id="errorLabel" prefHeight="18.0" alignment="CENTER"
+                           maxWidth="1.7976931348623157E308"
+                           textFill="#ef4444"/>
+
+                    <Button fx:id="buttonConnecter" text="SE CONNECTER" onAction="#Login" prefHeight="42.0"
+                            maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                            style="-fx-background-color: #4A5DEF;-fx-text-fill: white;-fx-font-weight: bold;-fx-background-radius: 10;-fx-cursor: hand;-fx-focus-color: transparent;-fx-faint-focus-color: transparent;"/>
+                    <HBox alignment="CENTER" spacing="6">
+                        <Label text="Vous n’avez pas de compte ?" textFill="#000000">
+                            <font>
+                                <Font size="11.0"/>
+                            </font>
+                        </Label>
+
+                        <Hyperlink text="Inscrivez-vous pour votre entreprise" onAction="#opencompteEntreprise"
+                                   underline="false" style="-fx-text-fill: #4A5DEF;">
+                            <font>
+                                <Font size="11.0"/>
+                            </font>
+                        </Hyperlink>
+                    </HBox>
+                    <Label text="ou" textFill="#000000">
+                        <font>
+                            <Font size="11.0"/>
+                        </font>
+                    </Label>
+                    <HBox alignment="CENTER" spacing="6">
+                        <Label text="Vous souhaitez postuler à un offre ?" textFill="#000000">
+                            <font>
+                                <Font size="11.0"/>
+                            </font>
+                        </Label>
+
+                        <Hyperlink text="créer un compte" alignment="CENTER" underline="false"
+                                   onAction="#openCompteVisiteur" style="-fx-text-fill: #4A5DEF;">
+                            <font>
+                                <Font size="11.0"/>
+                            </font>
+                        </Hyperlink>
+                    </HBox>
+
+                </children>
+            </VBox>
+
+        </children>
+    </StackPane>
+
+</AnchorPane>

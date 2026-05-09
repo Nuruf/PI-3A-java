@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Momentum HR - Générateur de Documents</title>
+    <style>
+        /* ═══════════════════════════════════════════════════════════════════
+           MOMENTUM COLOR PALETTE
+           ═══════════════════════════════════════════════════════════════════ */
+        :root {
+            --primary: #4A5DEF;
+            --primary-dark: #3944D5;
+            --primary-light: #6680FF;
+            --accent-0: #F0F5FF;
+            --accent-1: #D3F0FF;
+            --accent-2: #C0E0FF;
+
+            --success: #27ae60;
+            --success-light: #d5f5e3;
+            --warning: #f39c12;
+            --warning-light: #fef5e7;
+            --danger: #e74c3c;
+            --danger-light: #fadbd8;
+            --info: #3498db;
+            --info-light: #d4e6f1;
+
+            --text-dark: #2c3e50;
+            --text-muted: #6b7280;
+            --text-light: #999999;
+            --border-light: #e5e7eb;
+            --bg-light: #f8f9fa;
+            --bg-white: #ffffff;
+
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
+
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           RESET & BASE
+           ═══════════════════════════════════════════════════════════════════ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--accent-0) 0%, #ffffff 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            color: var(--text-dark);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           MAIN CONTAINER
+           ═══════════════════════════════════════════════════════════════════ */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           CARD
+           ═══════════════════════════════════════════════════════════════════ */
+        .card {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════════════════════════════════ */
+        .card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 30px 40px;
+            color: white;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-icon {
+            font-size: 36px;
+        }
+
+        .header-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header-text p {
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           CARD BODY
+           ═══════════════════════════════════════════════════════════════════ */
+        .card-body {
+            padding: 40px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           FORM SECTIONS
+           ═══════════════════════════════════════════════════════════════════ */
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-0);
+        }
+
+        .section-title span {
+            font-size: 20px;
+        }
+
+        .section-title h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           FORM GRID
+           ═══════════════════════════════════════════════════════════════════ */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-grid.single-col {
+            grid-template-columns: 1fr;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           FORM GROUP
+           ═══════════════════════════════════════════════════════════════════ */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-group label .required {
+            color: var(--danger);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           INPUTS
+           ═══════════════════════════════════════════════════════════════════ */
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-family: inherit;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            background: var(--bg-white);
+            transition: all 0.2s ease;
+            color: var(--text-dark);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(74, 93, 239, 0.1);
+        }
+
+        input:hover,
+        select:hover,
+        textarea:hover {
+            border-color: var(--accent-2);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--text-light);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           INPUT STATES
+           ═══════════════════════════════════════════════════════════════════ */
+        .form-group.error input,
+        .form-group.error select,
+        .form-group.error textarea {
+            border-color: var(--danger);
+            background: var(--danger-light);
+        }
+
+        .error-message {
+            font-size: 12px;
+            color: var(--danger);
+            display: none;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           RADIO & CHECKBOX GROUP
+           ═══════════════════════════════════════════════════════════════════ */
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px 16px;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+        }
+
+        .radio-option:hover,
+        .checkbox-option:hover {
+            border-color: var(--primary-light);
+            background: var(--accent-0);
+        }
+
+        .radio-option.selected,
+        .checkbox-option.selected {
+            border-color: var(--primary);
+            background: var(--accent-0);
+        }
+
+        .radio-option input,
+        .checkbox-option input {
+            width: auto;
+            accent-color: var(--primary);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           PRIORITY BADGES
+           ═══════════════════════════════════════════════════════════════════ */
+        .priority-selector {
+            display: flex;
+            gap: 12px;
+        }
+
+        .priority-option {
+            flex: 1;
+            padding: 12px 16px;
+            text-align: center;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+
+        .priority-option:hover {
+            transform: translateY(-2px);
+        }
+
+        .priority-option.high {
+            border-color: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .priority-option.high.selected {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .priority-option.normal {
+            border-color: var(--info-light);
+            color: var(--info);
+        }
+
+        .priority-option.normal.selected {
+            background: var(--info);
+            border-color: var(--info);
+            color: white;
+        }
+
+        .priority-option.low {
+            border-color: var(--success-light);
+            color: var(--success);
+        }
+
+        .priority-option.low.selected {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           BUTTONS
+           ═══════════════════════════════════════════════════════════════════ */
+        .button-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .btn {
+            padding: 14px 28px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(74, 93, 239, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(74, 93, 239, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-muted);
+            border: 2px solid var(--border-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-light);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           PREVIEW SECTION
+           ═══════════════════════════════════════════════════════════════════ */
+        .preview-section {
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .preview-content {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+            color: var(--text-dark);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           INFO BOX
+           ═══════════════════════════════════════════════════════════════════ */
+        .info-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            background: var(--info-light);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--info);
+            margin-bottom: 20px;
+        }
+
+        .info-box-icon {
+            font-size: 20px;
+        }
+
+        .info-box-content {
+            font-size: 13px;
+            color: var(--text-dark);
+        }
+
+        .info-box-content strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           LOADING STATE
+           ═══════════════════════════════════════════════════════════════════ */
+        .btn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .btn.loading::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           SUCCESS MESSAGE
+           ═══════════════════════════════════════════════════════════════════ */
+        .success-message {
+            display: none;
+            background: var(--success-light);
+            border: 2px solid var(--success);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .success-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .success-message h3 {
+            color: var(--success);
+            margin-bottom: 5px;
+        }
+
+        .success-message p {
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <!-- Header -->
+        <div class="card-header">
+            <div class="header-content">
+                <span class="header-icon">📄</span>
+                <div class="header-text">
+                    <h1>Générateur de Documents RH</h1>
+                    <p>Créez des documents professionnels avec l'assistance de l'IA</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <form id="documentForm">
+                <!-- Info Box -->
+                <div class="info-box">
+                    <span class="info-box-icon">💡</span>
+                    <div class="info-box-content">
+                        <strong>Comment ça marche ?</strong>
+                        Remplissez les informations ci-dessous et notre IA générera automatiquement
+                        un document RH professionnel au format PDF et Word.
+                    </div>
+                </div>
+
+                <!-- Section: Type de Document -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>📋</span>
+                        <h3>Type de Document</h3>
+                    </div>
+                    <div class="form-grid single-col">
+                        <div class="form-group">
+                            <label>
+                                Sélectionnez le type de document
+                                <span class="required">*</span>
+                            </label>
+                            <select id="documentType" required>
+                                <option value="">-- Choisir un type --</option>
+                                <option value="Attestation de travail">📃 Attestation de travail</option>
+                                <option value="Autorisation de congé">🏖️ Autorisation de congé</option>
+                                <option value="Certificat de salaire">💰 Certificat de salaire</option>
+                                <option value="Lettre de recommandation">⭐ Lettre de recommandation</option>
+                                <option value="Notification de promotion">🎉 Notification de promotion</option>
+                                <option value="Confirmation de formation">📚 Confirmation de formation</option>
+                                <option value="Avertissement">⚠️ Avertissement</option>
+                                <option value="Autre">📝 Autre</option>
+                            </select>
+                            <span class="error-message">Veuillez sélectionner un type</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Informations Employé -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>👤</span>
+                        <h3>Informations de l'Employé</h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>
+                                Nom complet
+                                <span class="required">*</span>
+                            </label>
+                            <input type="text" id="employeeName" placeholder="Ex: Ahmed Ben Ali" required>
+                            <span class="error-message">Nom requis</span>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                Poste occupé
+                                <span class="required">*</span>
+                            </label>
+                            <input type="text" id="position" placeholder="Ex: Développeur Senior" required>
+                            <span class="error-message">Poste requis</span>
+                        </div>
+                        <div class="form-group">
+                            <label>ID Employé</label>
+                            <input type="text" id="employeeId" placeholder="Ex: EMP001">
+                        </div>
+                        <div class="form-group">
+                            <label>Date d'embauche</label>
+                            <input type="date" id="hireDate">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="email" placeholder="email@entreprise.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Département</label>
+                            <select id="department">
+                                <option value="">-- Sélectionner --</option>
+                                <option value="Ressources Humaines">Ressources Humaines</option>
+                                <option value="Informatique">Informatique</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Commercial">Commercial</option>
+                                <option value="Production">Production</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Priorité -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>🔥</span>
+                        <h3>Priorité</h3>
+                    </div>
+                    <div class="priority-selector">
+                        <div class="priority-option high" data-value="HAUTE" onclick="selectPriority(this)">
+                            🔴 Haute
+                        </div>
+                        <div class="priority-option normal selected" data-value="NORMALE" onclick="selectPriority(this)">
+                            🟡 Normale
+                        </div>
+                        <div class="priority-option low" data-value="BASSE" onclick="selectPriority(this)">
+                            🟢 Basse
+                        </div>
+                    </div>
+                    <input type="hidden" id="priority" value="NORMALE">
+                </div>
+
+                <!-- Section: Informations Supplémentaires -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>📝</span>
+                        <h3>Informations Supplémentaires</h3>
+                    </div>
+                    <div class="form-grid single-col">
+                        <div class="form-group full-width">
+                            <label>Contexte / Détails</label>
+                            <textarea id="additionalInfo"
+                                      placeholder="Ajoutez des informations spécifiques concernant cette demande..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview Section -->
+                <div class="preview-section" id="previewSection" style="display: none;">
+                    <div class="preview-header">
+                        <h4>📋 Aperçu du document</h4>
+                        <button type="button" class="btn btn-secondary" onclick="togglePreview()">
+                            Masquer
+                        </button>
+                    </div>
+                    <div class="preview-content" id="previewContent">
+                        Le contenu généré apparaîtra ici...
+                    </div>
+                </div>
+
+                <!-- Success Message -->
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">✅</div>
+                    <h3>Document généré avec succès !</h3>
+                    <p>Votre document a été créé et sauvegardé.</p>
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-group">
+                    <button type="reset" class="btn btn-secondary">
+                        🔄 Réinitialiser
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="previewDocument()">
+                        👁️ Aperçu
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        🚀 Générer le Document
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Priority selector
+    function selectPriority(element) {
+        document.querySelectorAll('.priority-option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        element.classList.add('selected');
+        document.getElementById('priority').value = element.dataset.value;
+    }
+
+    // Preview toggle
+    function togglePreview() {
+        const section = document.getElementById('previewSection');
+        section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Generate preview
+    function previewDocument() {
+        const type = document.getElementById('documentType').value;
+        const name = document.getElementById('employeeName').value;
+        const position = document.getElementById('position').value;
+        const id = document.getElementById('employeeId').value || 'N/A';
+        const info = document.getElementById('additionalInfo').value;
+
+        if (!type || !name || !position) {
+            alert('Veuillez remplir les champs obligatoires');
+            return;
+        }
+
+        const today = new Date().toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+
+        const preview = `
+═══════════════════════════════════════════════════
+                    ${type.toUpperCase()}
+═══════════════════════════════════════════════════
+
+Référence: REF/RH/${new Date().toISOString().slice(0,10).replace(/-/g,'')}/001
+
+À qui de droit,
+
+Je soussigné(e), Directeur des Ressources Humaines, atteste par
+la présente que:
+
+Nom et Prénom: ${name}
+Poste occupé: ${position}
+Numéro d'employé: ${id}
+
+travaille au sein de notre entreprise.
+
+${info ? '\nInformations supplémentaires:\n' + info + '\n' : ''}
+
+Cette attestation est délivrée à l'intéressé(e) pour servir et
+valoir ce que de droit.
+
+Fait à Tunis, le ${today}
+
+Cordialement,
+
+Le Directeur des Ressources Humaines
+
+[Signature]
+
+Service RH
+
+───────────────────────────────────────────────────
+Document généré électroniquement - Valide sans signature
+            `.trim();
+
+        document.getElementById('previewContent').textContent = preview;
+        document.getElementById('previewSection').style.display = 'block';
+    }
+
+    // Form submission
+    document.getElementById('documentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Validate
+        let isValid = true;
+        const requiredFields = ['documentType', 'employeeName', 'position'];
+
+        requiredFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            const group = field.closest('.form-group');
+
+            if (!field.value.trim()) {
+                group.classList.add('error');
+                isValid = false;
+            } else {
+                group.classList.remove('error');
+            }
+        });
+
+        if (!isValid) return;
+
+        const btn = document.getElementById('submitBtn');
+        btn.classList.add('loading');
+        btn.textContent = 'Génération en cours...';
+
+        setTimeout(() => {
+            btn.classList.remove('loading');
+            btn.innerHTML = '🚀 Générer le Document';
+
+            document.getElementById('successMessage').classList.add('show');
+
+            setTimeout(() => {
+                document.getElementById('successMessage').classList.remove('show');
+            }, 3000);
+        }, 2000);
+    });
+
+    document.querySelectorAll('input[required], select[required]').forEach(field => {
+        field.addEventListener('input', function() {
+            const group = this.closest('.form-group');
+            if (this.value.trim()) {
+                group.classList.remove('error');
+            }
+        });
+    });
+</script>
+</body>
+</html>

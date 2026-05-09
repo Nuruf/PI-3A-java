@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="500.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: -color-base-0;" stylesheets="@customTheme.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.formations.GestionInscriptionsController">
+    <padding>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+    </padding>
+    <children>
+        <!-- Header -->
+        <VBox spacing="5.0">
+            <children>
+                <Label style="-fx-font-weight: bold; -fx-font-size: 22px;" text="Gestion des Inscriptions" />
+                <Label fx:id="lblFormationTitle" style="-fx-font-size: 14px;" text="Formation: " textFill="#6e6e6e" />
+            </children>
+        </VBox>
+
+        <Separator />
+
+        <!-- Liste des inscriptions -->
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+            <content>
+                <VBox fx:id="inscriptionsContainer" spacing="12.0">
+                    <padding>
+                        <Insets right="10.0" />
+                    </padding>
+                    <!-- Les cartes d'inscription seront ajoutées ici dynamiquement -->
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <!-- Footer -->
+        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+            <children>
+                <Button fx:id="btnFermer" mnemonicParsing="false" onAction="#handleFermer" prefHeight="35.0" styleClass="outline" text="Fermer" />
+            </children>
+        </HBox>
+    </children>
+</VBox>
+

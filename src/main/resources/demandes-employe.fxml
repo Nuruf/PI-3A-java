@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+
+<AnchorPane prefHeight="650.0" prefWidth="1100.0"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.employers.employes.DemandesEmployeController">
+    <children>
+        <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE"
+                 AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <tabs>
+                <Tab text="📋 Mes Demandes" closable="false">
+                    <HBox spacing="15">
+                        <padding>
+                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                        </padding>
+                        <children>
+                            <!-- Main Content -->
+                            <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                <children>
+                                    <Label text="Mes Demandes" textFill="#2c3e50">
+                                        <font>
+                                            <Font name="System Bold" size="24.0" />
+                                        </font>
+                                    </Label>
+
+                                    <!-- Top Bar -->
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                        <padding>
+                                            <Insets top="5.0" bottom="5.0" />
+                                        </padding>
+                                        <children>
+                                            <Label text="🔍" style="-fx-font-size: 16;" />
+                                            <TextField fx:id="rechercheField"
+                                                       prefWidth="250.0"
+                                                       promptText="Rechercher..." />
+                                            <ComboBox fx:id="filterStatutCombo"
+                                                      prefWidth="140.0"
+                                                      promptText="Statut" />
+                                            <ComboBox fx:id="filterPrioriteCombo"
+                                                      prefWidth="140.0"
+                                                      promptText="Priorité" />
+                                            <Region HBox.hgrow="ALWAYS" />
+                                            <Button onAction="#ouvrirAjouter"
+                                                    prefWidth="170.0"
+                                                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand;"
+                                                    text="+ Nouvelle Demande">
+                                                <font>
+                                                    <Font name="System Bold" size="13.0" />
+                                                </font>
+                                            </Button>
+                                        </children>
+                                    </HBox>
+
+                                    <!-- Summary Bar -->
+                                    <HBox spacing="15.0" alignment="CENTER_LEFT"
+                                          style="-fx-padding: 8 15; -fx-background-color: #f0f3f5; -fx-background-radius: 8;">
+                                        <children>
+                                            <Label fx:id="lblSummaryTotal" text="Total: 0"
+                                                   style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                                            <Separator orientation="VERTICAL" prefHeight="20.0" />
+                                            <Label fx:id="lblSummaryNouvelle" text="🔵 Nouvelle: 0"
+                                                   style="-fx-text-fill: #3498db; -fx-font-weight: bold;" />
+                                            <Label fx:id="lblSummaryEnCours" text="🟡 En cours: 0"
+                                                   style="-fx-text-fill: #f39c12; -fx-font-weight: bold;" />
+                                            <Label fx:id="lblSummaryEnAttente" text="🟠 En attente: 0"
+                                                   style="-fx-text-fill: #e67e22; -fx-font-weight: bold;" />
+                                            <Label fx:id="lblSummaryResolue" text="🟢 Résolue: 0"
+                                                   style="-fx-text-fill: #27ae60; -fx-font-weight: bold;" />
+                                            <Label fx:id="lblSummaryFermee" text="⚫ Fermée: 0"
+                                                   style="-fx-text-fill: #95a5a6; -fx-font-weight: bold;" />
+                                            <Label fx:id="lblSummaryAnnulee" text="🔴 Annulée: 0"
+                                                   style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;" />
+                                        </children>
+                                    </HBox>
+
+                                    <!-- Main Content Split -->
+                                    <SplitPane dividerPositions="0.45" VBox.vgrow="ALWAYS">
+                                        <items>
+                                            <!-- Left: Cards -->
+                                            <VBox spacing="5.0">
+                                                <padding><Insets right="5.0" /></padding>
+                                                <children>
+                                                    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                                                                style="-fx-background-color: transparent;">
+                                                        <content>
+                                                            <VBox fx:id="cardsContainer" spacing="10.0"
+                                                                  style="-fx-padding: 5;" />
+                                                        </content>
+                                                    </ScrollPane>
+                                                </children>
+                                            </VBox>
+
+                                            <!-- Right: Details -->
+                                            <ScrollPane fitToWidth="true">
+                                                <content>
+                                                    <VBox spacing="10.0" style="-fx-background-color: #f8f9fa;">
+                                                        <padding>
+                                                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                        </padding>
+                                                        <children>
+                                                            <!-- Placeholder -->
+                                                            <VBox fx:id="placeholderBox" alignment="CENTER"
+                                                                  spacing="10.0" style="-fx-padding: 50;">
+                                                                <children>
+                                                                    <Label text="📋" style="-fx-font-size: 48;" />
+                                                                    <Label text="Sélectionnez une demande"
+                                                                           style="-fx-font-size: 16; -fx-text-fill: #999;" />
+                                                                    <Label text="Cliquez sur une carte pour voir les détails"
+                                                                           style="-fx-font-size: 12; -fx-text-fill: #bbb;" />
+                                                                </children>
+                                                            </VBox>
+
+                                                            <!-- Details Content -->
+                                                            <VBox fx:id="detailsContent" spacing="10.0"
+                                                                  visible="false" managed="false">
+                                                                <children>
+                                                                    <!-- Title + Badge -->
+                                                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                                        <children>
+                                                                            <Label fx:id="detailTitreLabel"
+                                                                                   style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"
+                                                                                   HBox.hgrow="ALWAYS" />
+                                                                            <Label fx:id="detailStatusBadge"
+                                                                                   style="-fx-padding: 5 12; -fx-background-radius: 15; -fx-font-weight: bold;" />
+                                                                        </children>
+                                                                    </HBox>
+
+                                                                    <Separator />
+
+                                                                    <!-- Info Grid -->
+                                                                    <GridPane hgap="10.0" vgap="8.0">
+                                                                        <columnConstraints>
+                                                                            <ColumnConstraints minWidth="110.0" />
+                                                                            <ColumnConstraints hgrow="ALWAYS" />
+                                                                        </columnConstraints>
+                                                                        <children>
+                                                                            <Label text="Catégorie:" style="-fx-font-weight: bold; -fx-text-fill: #666;" GridPane.rowIndex="0" />
+                                                                            <Label fx:id="detailCategorieLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                                                            <Label text="Type:" style="-fx-font-weight: bold; -fx-text-fill: #666;" GridPane.rowIndex="1" />
+                                                                            <Label fx:id="detailTypeLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                            <Label text="Priorité:" style="-fx-font-weight: bold; -fx-text-fill: #666;" GridPane.rowIndex="2" />
+                                                                            <Label fx:id="detailPrioriteLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                            <Label text="Statut:" style="-fx-font-weight: bold; -fx-text-fill: #666;" GridPane.rowIndex="3" />
+                                                                            <Label fx:id="detailStatusLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                            <Label text="Date:" style="-fx-font-weight: bold; -fx-text-fill: #666;" GridPane.rowIndex="4" />
+                                                                            <Label fx:id="detailDateLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                        </children>
+                                                                    </GridPane>
+
+                                                                    <Separator />
+
+                                                                    <Label text="Description:" style="-fx-font-weight: bold; -fx-text-fill: #666;" />
+                                                                    <Label fx:id="detailDescriptionLabel" wrapText="true"
+                                                                           style="-fx-padding: 10; -fx-background-color: white; -fx-background-radius: 5; -fx-border-color: #e0e0e0; -fx-border-radius: 5;" />
+
+                                                                    <Separator />
+
+                                                                    <Label text="Détails Spécifiques:" style="-fx-font-weight: bold; -fx-text-fill: #666;" />
+                                                                    <VBox fx:id="detailSpecificContainer" spacing="5.0"
+                                                                          style="-fx-padding: 10; -fx-background-color: white; -fx-background-radius: 5; -fx-border-color: #e0e0e0; -fx-border-radius: 5;" />
+
+                                                                    <Separator />
+
+                                                                    <Label text="📍 Progression du Statut:" style="-fx-font-weight: bold; -fx-text-fill: #666; -fx-font-size: 14;" />
+                                                                    <HBox fx:id="statusProgressBar" spacing="5.0" alignment="CENTER"
+                                                                          style="-fx-padding: 15; -fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8;" />
+
+                                                                    <Separator />
+
+                                                                    <Label text="📜 Suivi de ma demande:" style="-fx-font-weight: bold; -fx-text-fill: #666; -fx-font-size: 14;" />
+                                                                    <VBox fx:id="historiqueContainer" spacing="8.0" />
+
+                                                                    <!-- ═══════════════════════════════════════════════ -->
+                                                                    <!-- CANCEL SECTION - THIS IS THE NEW PART -->
+                                                                    <!-- ═══════════════════════════════════════════════ -->
+                                                                    <Separator />
+
+                                                                    <VBox fx:id="cancelSection" spacing="10.0"
+                                                                          visible="false" managed="false"
+                                                                          style="-fx-padding: 15; -fx-background-color: #fff5f5; -fx-background-radius: 8; -fx-border-color: #ffcccc; -fx-border-radius: 8;">
+                                                                        <children>
+                                                                            <Label text="⚠️ Annuler cette demande"
+                                                                                   style="-fx-font-weight: bold; -fx-text-fill: #c0392b; -fx-font-size: 14;" />
+                                                                            <Label text="Vous pouvez annuler cette demande car elle n'a pas encore été traitée par le service RH."
+                                                                                   wrapText="true"
+                                                                                   style="-fx-text-fill: #666; -fx-font-size: 11;" />
+                                                                            <HBox alignment="CENTER_RIGHT">
+                                                                                <children>
+                                                                                    <Button fx:id="cancelDemandeBtn"
+                                                                                            text="❌ Annuler cette demande"
+                                                                                            onAction="#annulerDemande"
+                                                                                            style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 10 20; -fx-cursor: hand;">
+                                                                                    </Button>
+                                                                                </children>
+                                                                            </HBox>
+                                                                        </children>
+                                                                    </VBox>
+                                                                    <!-- END CANCEL SECTION -->
+
+                                                                </children>
+                                                            </VBox>
+                                                        </children>
+                                                    </VBox>
+                                                </content>
+                                            </ScrollPane>
+                                        </items>
+                                    </SplitPane>
+                                </children>
+                            </VBox>
+
+                            <!-- RIGHT PANEL: Weather Widget -->
+                            <VBox spacing="10" alignment="TOP_CENTER" minWidth="300" maxWidth="310">
+                                <children>
+                                    <!-- Weather Widget -->
+                                    <VBox fx:id="weatherWidgetContainer" spacing="8" prefWidth="295"
+                                          style="-fx-background-color: linear-gradient(to bottom right, #1e3c72, #2a5298);
+                                                 -fx-background-radius: 14; -fx-padding: 16;
+                                                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 12, 0, 0, 4);">
+                                        <children>
+                                            <!-- Header -->
+                                            <HBox alignment="CENTER_LEFT" spacing="8">
+                                                <Label text="☁️ Météo" style="-fx-text-fill: white; -fx-font-size: 13; -fx-font-weight: bold;" />
+                                                <Region HBox.hgrow="ALWAYS" />
+                                                <Label fx:id="cityLabel" text="--" style="-fx-text-fill: rgba(255,255,255,0.7); -fx-font-size: 11;" />
+                                                <Button text="🔄" onAction="#refreshWeather"
+                                                        style="-fx-background-color: rgba(255,255,255,0.15); -fx-text-fill: white;
+                                                               -fx-background-radius: 12; -fx-cursor: hand;
+                                                               -fx-min-width: 28; -fx-min-height: 28; -fx-font-size: 11;" />
+                                            </HBox>
+
+                                            <!-- Alert Box -->
+                                            <HBox fx:id="alertBox" visible="false" managed="false" alignment="CENTER"
+                                                  style="-fx-background-color: rgba(231,76,60,0.9); -fx-background-radius: 8; -fx-padding: 6;">
+                                                <Label fx:id="alertLabel" wrapText="true"
+                                                       style="-fx-text-fill: white; -fx-font-size: 10; -fx-font-weight: bold;" />
+                                            </HBox>
+
+                                            <!-- Main Weather Display -->
+                                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                                <ImageView fx:id="weatherIcon" fitHeight="55" fitWidth="55" preserveRatio="true" />
+                                                <VBox spacing="1">
+                                                    <Label fx:id="temperatureLabel" text="--°C"
+                                                           style="-fx-text-fill: white; -fx-font-size: 30; -fx-font-weight: bold;" />
+                                                    <Label fx:id="descriptionLabel" text="--"
+                                                           style="-fx-text-fill: rgba(255,255,255,0.8); -fx-font-size: 11;" />
+                                                </VBox>
+                                            </HBox>
+
+                                            <!-- Weather Stats -->
+                                            <HBox spacing="0" alignment="CENTER">
+                                                <VBox spacing="2" alignment="CENTER" HBox.hgrow="ALWAYS"
+                                                      style="-fx-background-color: rgba(255,255,255,0.08); -fx-background-radius: 8; -fx-padding: 8 4;">
+                                                    <Label text="💧" style="-fx-font-size: 13;" />
+                                                    <Label fx:id="humidityLabel" text="--%"
+                                                           style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12;" />
+                                                    <Label text="Humidité" style="-fx-text-fill: rgba(255,255,255,0.5); -fx-font-size: 8;" />
+                                                </VBox>
+                                                <VBox spacing="2" alignment="CENTER" HBox.hgrow="ALWAYS"
+                                                      style="-fx-background-color: rgba(255,255,255,0.08); -fx-background-radius: 8; -fx-padding: 8 4;">
+                                                    <Label text="💨" style="-fx-font-size: 13;" />
+                                                    <Label fx:id="windLabel" text="--"
+                                                           style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12;" />
+                                                    <Label text="Vent" style="-fx-text-fill: rgba(255,255,255,0.5); -fx-font-size: 8;" />
+                                                </VBox>
+                                                <VBox spacing="2" alignment="CENTER" HBox.hgrow="ALWAYS"
+                                                      style="-fx-background-color: rgba(255,255,255,0.08); -fx-background-radius: 8; -fx-padding: 8 4;">
+                                                    <Label text="🌡️" style="-fx-font-size: 13;" />
+                                                    <Label fx:id="feelsLikeLabel" text="--°C"
+                                                           style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12;" />
+                                                    <Label text="Ressenti" style="-fx-text-fill: rgba(255,255,255,0.5); -fx-font-size: 8;" />
+                                                </VBox>
+                                            </HBox>
+
+                                            <!-- Toggle Forecast Button -->
+                                            <HBox alignment="CENTER">
+                                                <Button fx:id="toggleForecastBtn" text="📅 Voir la semaine ▼"
+                                                        onAction="#toggleForecast"
+                                                        style="-fx-background-color: rgba(255,255,255,0.12);
+                                                               -fx-text-fill: rgba(255,255,255,0.8);
+                                                               -fx-background-radius: 8; -fx-cursor: hand;
+                                                               -fx-font-size: 10; -fx-padding: 6 12;" />
+                                            </HBox>
+
+                                            <!-- Forecast Section (Hidden by default) -->
+                                            <VBox fx:id="forecastSection" spacing="6" visible="false" managed="false">
+                                                <children>
+                                                    <Label text="📅 Prévisions 5 jours"
+                                                           style="-fx-text-fill: rgba(255,255,255,0.7);
+                                                                  -fx-font-size: 10; -fx-font-weight: bold;" />
+                                                    <HBox fx:id="forecastContainer" spacing="4" alignment="CENTER">
+                                                        <children>
+                                                            <Label text="Chargement..."
+                                                                   style="-fx-text-fill: rgba(255,255,255,0.4); -fx-font-size: 10;" />
+                                                        </children>
+                                                    </HBox>
+                                                </children>
+                                            </VBox>
+
+                                            <!-- Recommendation -->
+                                            <Label fx:id="recommendationLabel" text="..." wrapText="true"
+                                                   alignment="CENTER" maxWidth="Infinity"
+                                                   style="-fx-text-fill: white; -fx-font-size: 10;
+                                                          -fx-background-color: rgba(255,255,255,0.12);
+                                                          -fx-background-radius: 8; -fx-padding: 6;" />
+
+                                            <!-- Last Update -->
+                                            <Label fx:id="lastUpdateLabel" text="--"
+                                                   alignment="CENTER_RIGHT" maxWidth="Infinity"
+                                                   style="-fx-text-fill: rgba(255,255,255,0.35); -fx-font-size: 8;" />
+                                        </children>
+                                    </VBox>
+
+                                    <!-- Tips Box -->
+                                    <VBox fx:id="weatherTipsBox" spacing="6"
+                                          style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 12;
+                                                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0, 0, 2);">
+                                        <Label text="💡 Conseils du jour" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 11;" />
+                                        <Label fx:id="weatherTipLabel" text="..." wrapText="true" prefWidth="260"
+                                               style="-fx-text-fill: #666; -fx-font-size: 10;" />
+                                    </VBox>
+                                </children>
+                            </VBox>
+                        </children>
+                    </HBox>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="15.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.formations.EvaluationController">
+    <children>
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="15.0">
+            <children>
+                <VBox HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 20px;" text="Évaluations des Formations" />
+                        <Label fx:id="lblFormationTitle" text="Titre de la formation" textFill="#6e6e6e" />
+                    </children>
+                </VBox>
+                <Label fx:id="lblAverageRating" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="⭐ 0.0/5" />
+            </children>
+        </HBox>
+
+        <Separator />
+
+        <!-- Section pour ajouter une évaluation -->
+        <VBox spacing="10.0" style="-fx-border-color: -color-border-muted; -fx-border-width: 1; -fx-border-radius: 5; -fx-padding: 15; -fx-background-color: -color-bg-subtle;">
+            <children>
+                <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="✨ Ajouter votre évaluation" />
+
+                <!-- Note Selection -->
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Votre note (1-5 étoiles)" />
+                        <HBox spacing="10.0" alignment="CENTER_LEFT">
+                            <children>
+                                <Spinner fx:id="spinnerNote" prefWidth="80.0" />
+                                <Label fx:id="lblStars" style="-fx-font-size: 24px;" text="⭐" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <!-- Comment -->
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Votre commentaire" />
+                        <TextArea fx:id="txtCommentaire" prefHeight="100.0" promptText="Partagez vos impressions sur cette formation..." wrapText="true" />
+                    </children>
+                </VBox>
+
+                <!-- Action Buttons -->
+                <HBox spacing="10.0">
+                    <children>
+                        <Button fx:id="btnSubmitEvaluation" maxWidth="Infinity" onAction="#handleSubmitEvaluation" prefHeight="40.0" styleClass="accent" text="📤 Soumettre l'évaluation" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnClearEvaluation" onAction="#handleClearEvaluation" prefHeight="40.0" styleClass="outline" text="Effacer" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Evaluations List -->
+        <VBox spacing="10.0">
+            <children>
+                <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="📋 Les avis des employés" />
+
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="evaluationsContainer" spacing="12.0">
+                            <padding>
+                                <Insets right="10.0" />
+                            </padding>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </children>
+            <VBox.vgrow>ALWAYS</VBox.vgrow>
+        </VBox>
+    </children>
+</VBox>
+

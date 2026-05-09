@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.web.WebView?>
+
+<StackPane fx:id="rootNode" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.offres.CandidatureController">
+   <HBox alignment="CENTER" spacing="20.0" StackPane.alignment="CENTER">
+      <!-- LEFT CARD: DESCRIPTION (SCROLL FIX: Removed ScrollPane) -->
+      <VBox fx:id="descriptionCard" alignment="TOP_CENTER" maxHeight="620.0" prefHeight="620.0" prefWidth="500.0" style="-fx-background-color: -color-bg-default; -fx-background-radius: 15;">
+         <effect>
+            <DropShadow height="30.0" radius="14.5" width="30.0"><color><Color opacity="0.1" /></color></DropShadow>
+         </effect>
+         <children>
+            <!-- WebView handles its own scrolling natively -->
+            <WebView fx:id="detailsWebView" prefHeight="620.0" prefWidth="480.0">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
+            </WebView>
+         </children>
+      </VBox>
+
+      <!-- RIGHT CARD: ACTIONS (POSTULER) -->
+      <VBox fx:id="mainActionCard" alignment="TOP_CENTER" maxHeight="620.0" maxWidth="1098.0" minHeight="570.0" minWidth="493.0" prefHeight="620.0" prefWidth="579.0" spacing="20.0" style="-fx-background-color: -color-bg-default; -fx-background-radius: 15;">
+         <padding>
+            <Insets bottom="40.0" left="60.0" right="60.0" top="40.0" />
+         </padding>
+         <effect>
+            <DropShadow height="30.0" radius="14.5" width="30.0"><color><Color opacity="0.1" /></color></DropShadow>
+         </effect>
+         <children>
+            <ImageView fitHeight="40.0" preserveRatio="true">
+               <VBox.margin><Insets bottom="20.0" /></VBox.margin>
+               <Image url="@../images/wordMarkLogo.png" />
+            </ImageView>
+
+            <StackPane fx:id="contentStack" VBox.vgrow="ALWAYS">
+               <!-- FORMULAIRE VIEW -->
+               <VBox fx:id="postulationFormView" managed="false" spacing="20.0" visible="false">
+                  <GridPane hgap="15.0" vgap="15.0">
+                     <columnConstraints><ColumnConstraints hgrow="ALWAYS" /><ColumnConstraints hgrow="ALWAYS" /></columnConstraints>
+                     <rowConstraints><RowConstraints /><RowConstraints /></rowConstraints>
+                  </GridPane>
+                  <Button fx:id="btnUploadCV" maxWidth="Infinity" onAction="#pickCV" prefHeight="45.0" styleClass="button-outlined" text="📎 Joindre CV (PDF) *" />
+                  <Button fx:id="btnUploadLettre" maxWidth="Infinity" onAction="#pickLettre" prefHeight="45.0" styleClass="button-outlined" text="📎 Lettre de Motivation (PDF)" />
+                  <Region VBox.vgrow="ALWAYS" />
+                  <HBox spacing="15.0">
+                     <Button onAction="#handleClose" prefHeight="50.0" prefWidth="150.0" text="Retour" />
+                     <Button maxWidth="Infinity" onAction="#handlePostuler" prefHeight="50.0" styleClass="accent" text="Postuler" HBox.hgrow="ALWAYS" />
+                  </HBox>
+               </VBox>
+
+               <!-- SUCCÈS VIEW -->
+               <VBox fx:id="succesEnvoiView" alignment="CENTER" managed="false" spacing="25.0" visible="false">
+                  <children>
+                     <!-- Optional: Small X at the top right of this specific view if you want consistency -->
+                     <HBox alignment="TOP_RIGHT">
+                        <Button onAction="#handleClose" styleClass="button-icon, flat" text="✕" style="-fx-font-size: 16;" />
+                        <VBox.margin><Insets bottom="0.0" right="-30.0" top="-40.0" /></VBox.margin>
+                     </HBox>
+
+                     <Label style="-fx-font-size: 60; -fx-text-fill: -color-success-emphasis;" text="✔" />
+                     <Label style="-fx-font-weight: bold; -fx-font-size: 22; -fx-text-fill: -color-fg-default;" text="Merci pour votre candidature !" />
+                     <Label style="-fx-text-fill: -color-fg-muted;" text="Veuillez conserver ce code pour suivre l'état du dossier :" />
+
+                     <Label fx:id="lblTrackingCode" style="-fx-background-color: -color-accent-subtle; -fx-padding: 15 40; -fx-text-fill: -color-accent-fg; -fx-font-weight: bold; -fx-font-size: 20; -fx-background-radius: 8;" text="MOM-XXXXXX" />
+
+                     <Region prefHeight="20" />
+
+                     <!-- NEW EXIT BUTTON -->
+                     <Button onAction="#handleClose" prefHeight="50.0" prefWidth="220.0" styleClass="accent" text="Terminer et Fermer" />
+                  </children>
+               </VBox>
+            </StackPane>
+         </children>
+      </VBox>
+   </HBox>
+</StackPane>

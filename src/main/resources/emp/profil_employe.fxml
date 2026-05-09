@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.shape.Circle?>
+
+<?import javafx.scene.layout.FlowPane?>
+<AnchorPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.employers.profil_employe">
+
+    <children>
+        <VBox spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 24px;" text="Mon Profil" />
+                    <Label text="Gérez vos informations personnelles" textFill="#6e6e6e" />
+                </VBox>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;-fx-background: transparent;" VBox.vgrow="ALWAYS">
+                <content>
+                    <VBox spacing="15.0">
+                        <padding>
+                            <Insets right="10.0" top="55.0" />
+                        </padding>
+                        <StackPane>
+                            <VBox fx:id="profileCard"
+                                  style="-fx-background-color: -color-bg-subtle;-fx-background-radius: 5; -fx-border-color: -color-border-muted; -fx-border-radius: 5;">
+                                <HBox fx:id="profileRow" alignment="CENTER_LEFT" spacing="18.0" style="-fx-padding: 22 25 22 140;-fx-cursor: hand;">
+
+                                    <VBox spacing="3.0" prefWidth="240">
+                                        <Label fx:id="lblNomComplet" style="-fx-font-size: 15px;-fx-font-weight: bold;" />
+                                        <Label fx:id="lblEmailDisplay" style="-fx-font-size: 12px;-fx-text-fill: #868686;" />
+                                        <Label fx:id="lblRoleBadge" />
+                                    </VBox>
+
+                                    <Region HBox.hgrow="ALWAYS" />
+                                </HBox>
+                            </VBox>
+                            <StackPane fx:id="avatarContainer" prefWidth="100.0" prefHeight="100.0" minWidth="100.0" minHeight="100.0" maxWidth="100.0" maxHeight="100.0" onMouseClicked="#changerPhotoProfil" style="-fx-cursor: hand;" StackPane.alignment="TOP_LEFT" translateX="20.0" translateY="-50.0">
+
+                                <Circle fx:id="cercleArriere" radius="50.0" style="-fx-fill: #4A5DEF;" />
+
+                                <ImageView fx:id="imgProfil" fitWidth="90.0" fitHeight="90.0" preserveRatio="true" smooth="true" />
+
+                                <VBox fx:id="overlayPhoto" alignment="CENTER" visible="false" managed="false" style="-fx-background-color: rgba(0,0,0,0.5);-fx-background-radius: 45;">
+                                    <Label text="📷" style="-fx-font-size: 20px;-fx-text-fill: white" />
+                                    <Label text="Modifier" style="-fx-text-fill: white; -fx-font-size: 10px;-fx-font-weight: bold;" />
+                                </VBox>
+                            </StackPane>
+                        </StackPane>
+
+                        <VBox style="-fx-background-color: -color-bg-subtle;-fx-background-radius: 5;-fx-border-color: -color-border-muted;-fx-border-radius: 5;-fx-padding: 25;" spacing="20.0">
+
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <Label text="Coordonnées" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+                                    <Label text="Modifiez vos informations de contact" style="-fx-text-fill: #868686;-fx-font-size: 12px;" />
+                                </VBox>
+                            </HBox>
+
+                            <Separator />
+
+                            <HBox spacing="20.0">
+                                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                    <Label text="Nom" style="-fx-text-fill: #868686; -fx-font-size: 12px;" />
+                                    <TextField fx:id="txtNomProfil" promptText="Nom" />
+                                </VBox>
+                                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                    <Label text="Prénom" style="-fx-text-fill: #868686; -fx-font-size: 12px;" />
+                                    <TextField fx:id="txtPrenomProfil" promptText="Prénom" />
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="20.0">
+                                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                    <Label text="Email" style="-fx-text-fill: #868686;-fx-font-size: 12px;" />
+                                    <TextField fx:id="txtEmailProfil" promptText="exemple@email.com" />
+                                </VBox>
+                                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                    <Label text="Téléphone" style="-fx-text-fill: #868686;-fx-font-size: 12px;" />
+                                    <TextField fx:id="txtTelProfil" promptText="numéro" />
+                                </VBox>
+                            </HBox>
+
+                            <HBox alignment="CENTER_RIGHT" spacing="10.0" style="-fx-padding: 10 0 0 0;">
+                                <Label fx:id="lblInfoMessage" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button text="Enregistrer" onAction="#sauvegarderInfos" styleClass="accent" style="-fx-cursor: hand;-fx-font-weight: bold;-fx-font-size: 12px;" prefHeight="35" />
+                            </HBox>
+                        </VBox>
+                        <VBox style="-fx-background-color: -color-bg-subtle;-fx-background-radius: 5; -fx-border-color: -color-border-muted; -fx-border-radius: 5;-fx-padding: 25;" spacing="20.0">
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <VBox>
+                                    <Label text="Informations professionnelles" style="-fx-font-weight: bold;-fx-font-size: 16px;" />
+                                    <Label text="Gérées par votre administrateur" style="-fx-text-fill: #868686;-fx-font-size: 12px;" />
+                                </VBox>
+                            </HBox>
+                            <Separator />
+
+                            <HBox spacing="30.0">
+                                <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+                                    <Label text="Informations du poste"
+                                           style="-fx-font-weight: bold;-fx-font-size: 13px;-fx-padding: 0 0 5 0;" />
+
+                                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                        <Label text="Rôle" prefWidth="120" minWidth="120" style="-fx-text-fill: #868686;-fx-font-size: 12px;" />
+                                        <Label fx:id="lblRoleInfo" style="-fx-font-weight: bold;-fx-font-size: 12px;" />
+                                    </HBox>
+
+                                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                        <Label text="Poste" prefWidth="120" minWidth="120" style="-fx-text-fill: #868686;-fx-font-size: 12px;" />
+                                        <Label fx:id="lblPosteReadonly" style="-fx-font-weight: bold;-fx-font-size: 12px;" />
+                                    </HBox>
+
+                                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                        <Label text="Date d'embauche" prefWidth="120" minWidth="120" style="-fx-text-fill: #868686; -fx-font-size: 12px;" />
+                                        <Label fx:id="lblDateReadonly" style="-fx-font-weight: bold;-fx-font-size: 12px;" />
+                                    </HBox>
+                                </VBox>
+
+                                <Region prefWidth="1" style="-fx-background-color: -color-border-muted;" />
+
+                                <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+                                    <Label text="Entreprise"
+                                           style="-fx-font-weight: bold;-fx-font-size: 13px;-fx-padding: 0 0 5 0;" />
+
+                                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                        <Label text="Nom" prefWidth="120" minWidth="120"
+                                               style="-fx-text-fill: #868686; -fx-font-size: 12px;" />
+                                        <Label fx:id="lblEntrepriseNom"
+                                               style="-fx-font-weight: bold;-fx-font-size: 12px;" />
+                                    </HBox>
+
+                                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                        <Label text="Ville" prefWidth="120" minWidth="120" style="-fx-text-fill: #868686;-fx-font-size: 12px;" />
+                                        <Label fx:id="lblEntrepriseVille" style="-fx-font-weight: bold;-fx-font-size: 12px;" />
+                                    </HBox>
+
+                                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                        <Label text="Pays" prefWidth="120" minWidth="120" style="-fx-text-fill: #868686;-fx-font-size: 12px;" />
+                                        <Label fx:id="lblEntreprisePays" style="-fx-font-weight: bold;-fx-font-size: 12px;" />
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                        <VBox fx:id="competencesSection"
+                              style="-fx-background-color: -color-bg-subtle;-fx-background-radius: 5;-fx-border-color: -color-border-muted; -fx-border-radius: 5;-fx-padding: 25;"
+                              spacing="20.0">
+
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <Label text="Compétences" style="-fx-font-weight: bold;-fx-font-size: 16px;"/>
+                                </VBox>
+                                <Label fx:id="lblCompetencesStatus" style="-fx-font-size: 11px; -fx-text-fill: #868686;"/>
+                            </HBox>
+
+                            <Separator/>
+
+                            <VBox spacing="8.0">
+                                <Label text="Compétences techniques" style="-fx-font-weight: bold;-fx-font-size: 13px;"/>
+                                <VBox fx:id="containerSkills"/>
+                            </VBox>
+
+                            <Separator style="-fx-opacity: 0.3;"/>
+
+                            <VBox spacing="8.0">
+                                <Label text="Formations" style="-fx-font-weight: bold;-fx-font-size: 13px;"/>
+                                <VBox fx:id="containerFormations"/>
+                            </VBox>
+
+                            <Separator style="-fx-opacity: 0.3;"/>
+
+                            <VBox spacing="8.0">
+                                <Label text="Expériences" style="-fx-font-weight: bold;-fx-font-size: 13px;"/>
+                                <VBox fx:id="containerExperience"/>
+                            </VBox>
+                        </VBox>
+                        <VBox style="-fx-background-color: -color-bg-subtle;-fx-background-radius: 5;-fx-border-color: -color-border-muted; -fx-border-radius: 5; -fx-padding: 25;" spacing="20.0">
+
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <Label text="Sécurité du compte" style="-fx-font-weight: bold;-fx-font-size: 16px;" />
+                                    <Label text="Gérez votre mot de passe" style="-fx-text-fill: #868686;-fx-font-size: 12px;" />
+                                </VBox>
+                            </HBox>
+
+                            <Separator />
+
+                            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 5 0;">
+                                <Button text="Changer le mot de passe" onAction="#changerMotDePasse" styleClass="accent, outline" style="-fx-cursor: hand;-fx-font-weight: bold;-fx-font-size: 12px;" prefHeight="35" />
+                            </HBox>
+                        </VBox>
+
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </children>
+</AnchorPane>

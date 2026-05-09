@@ -1,0 +1,294 @@
+======================================================================
+PROJECT STRUCTURE
+======================================================================
+
+PI-3A-java/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   ├── controller/
+│   │   │   │   ├── components/
+│   │   │   │   │   └── DocumentGeneratorPanel.java (13.8 KB)
+│   │   │   │   ├── demandes/
+│   │   │   │   │   ├── DemandeFormHelper.java (42.0 KB)
+│   │   │   │   │   └── NavigationHelper.java (2.5 KB)
+│   │   │   │   ├── employers/
+│   │   │   │   │   ├── admin_sys/
+│   │   │   │   │   │   ├── adminController.java (2.3 KB)
+│   │   │   │   │   │   ├── demandes_entreprise.java (21.5 KB)
+│   │   │   │   │   │   └── homeAdmin.java (14.0 KB)
+│   │   │   │   │   ├── employes/
+│   │   │   │   │   │   ├── AjouterDemandeEmployeController.java (28.2 KB)
+│   │   │   │   │   │   ├── DemandesEmployeController.java (33.9 KB)
+│   │   │   │   │   │   └── employes.java (2.7 KB)
+│   │   │   │   │   ├── RHetAdminE/
+│   │   │   │   │   │   ├── AvancerDemandeController.java (17.3 KB)
+│   │   │   │   │   │   ├── DemandesController.java (73.0 KB)
+│   │   │   │   │   │   ├── EmployerController.java (29.1 KB)
+│   │   │   │   │   │   ├── ModifierDemandeController.java (21.7 KB)
+│   │   │   │   │   │   └── RHetAdminE.java (7.9 KB)
+│   │   │   │   │   ├── changer_mot_de_passe.java (5.3 KB)
+│   │   │   │   │   ├── compteEntreprise.java (7.5 KB)
+│   │   │   │   │   ├── compteVisiteur.java (4.7 KB)
+│   │   │   │   │   ├── login.java (9.5 KB)
+│   │   │   │   │   └── profil_employe.java (14.5 KB)
+│   │   │   │   ├── evenements/
+│   │   │   │   │   └── EvenementController.java (73 B)
+│   │   │   │   ├── formations/
+│   │   │   │   │   ├── EditFormationController.java (3.2 KB)
+│   │   │   │   │   ├── EvaluationController.java (12.7 KB)
+│   │   │   │   │   ├── FormationsController.java (45.1 KB)
+│   │   │   │   │   ├── GestionInscriptionsController.java (11.7 KB)
+│   │   │   │   │   ├── inscription_formationController.java (26.0 KB)
+│   │   │   │   │   └── ModifierRaisonController.java (5.2 KB)
+│   │   │   │   ├── offres/
+│   │   │   │   │   ├── CandidatController.java (21.4 KB)
+│   │   │   │   │   ├── CandidatureController.java (5.0 KB)
+│   │   │   │   │   ├── DescriptionOffreController.java (762 B)
+│   │   │   │   │   ├── EnterprisePortalController.java (4.8 KB)
+│   │   │   │   │   ├── MainFrontOfficeController.java (3.4 KB)
+│   │   │   │   │   ├── OffreController.java (15.5 KB)
+│   │   │   │   │   ├── OffrePortalController.java (6.0 KB)
+│   │   │   │   │   ├── RecrutementController.java (339 B)
+│   │   │   │   │   ├── RecrutementStatController.java (3.2 KB)
+│   │   │   │   │   └── SuiviCandidatureController.java (5.2 KB)
+│   │   │   │   ├── projets/
+│   │   │   │   │   ├── AjoutProjetController.java (11.4 KB)
+│   │   │   │   │   ├── AjoutTacheController.java (16.3 KB)
+│   │   │   │   │   └── ProjetsController.java (112.8 KB)
+│   │   │   │   ├── widgets/
+│   │   │   │   │   └── WeatherWidgetController.java (8.4 KB)
+│   │   │   │   ├── App.java (1.7 KB)
+│   │   │   │   └── MainViewController.java (3.3 KB)
+│   │   │   ├── entities/
+│   │   │   │   ├── demande/
+│   │   │   │   │   ├── Demande.java (2.3 KB)
+│   │   │   │   │   ├── DemandeDetails.java (1015 B)
+│   │   │   │   │   └── HistoriqueDemande.java (2.3 KB)
+│   │   │   │   ├── employers/
+│   │   │   │   │   ├── administrateur_systeme.java (805 B)
+│   │   │   │   │   ├── competences_employe.java (1.3 KB)
+│   │   │   │   │   ├── compte.java (1.2 KB)
+│   │   │   │   │   ├── employe.java (3.4 KB)
+│   │   │   │   │   ├── entreprise.java (3.5 KB)
+│   │   │   │   │   ├── role.java (773 B)
+│   │   │   │   │   ├── session.java (1.2 KB)
+│   │   │   │   │   ├── statut.java (762 B)
+│   │   │   │   │   └── visiteur.java (1.5 KB)
+│   │   │   │   ├── formation/
+│   │   │   │   │   ├── Evaluation.java (3.3 KB)
+│   │   │   │   │   ├── formation.java (2.6 KB)
+│   │   │   │   │   ├── inscription_formation.java (2.8 KB)
+│   │   │   │   │   └── StatutInscription.java (364 B)
+│   │   │   │   ├── offres/
+│   │   │   │   │   ├── Candidat.java (5.0 KB)
+│   │   │   │   │   ├── CategorieOffre.java (873 B)
+│   │   │   │   │   ├── EtatOffre.java (639 B)
+│   │   │   │   │   ├── Offre.java (3.0 KB)
+│   │   │   │   │   └── TypeContrat.java (676 B)
+│   │   │   │   └── projet/
+│   │   │   │       ├── priority.java (92 B)
+│   │   │   │       ├── Projet.java (3.7 KB)
+│   │   │   │       ├── statut.java (109 B)
+│   │   │   │       ├── statut_t.java (114 B)
+│   │   │   │       └── Tache.java (3.8 KB)
+│   │   │   ├── service/
+│   │   │   │   ├── api/
+│   │   │   │   │   ├── AIDocumentGeneratorService.java (36.7 KB)
+│   │   │   │   │   ├── ApiConfig.java (1.7 KB)
+│   │   │   │   │   ├── EmailService.java (16.1 KB)
+│   │   │   │   │   ├── MapPickerDialog.java (19.6 KB)
+│   │   │   │   │   └── WeatherService.java (16.8 KB)
+│   │   │   │   ├── demande/
+│   │   │   │   │   ├── DemandeCRUD.java (5.4 KB)
+│   │   │   │   │   ├── DemandeDetailsCRUD.java (2.1 KB)
+│   │   │   │   │   └── HistoriqueDemandeCRUD.java (3.4 KB)
+│   │   │   │   ├── employers/
+│   │   │   │   │   ├── adminCRUD.java (1008 B)
+│   │   │   │   │   ├── competence_employeCRUD.java (2.2 KB)
+│   │   │   │   │   ├── compteCRUD.java (3.3 KB)
+│   │   │   │   │   ├── employeCRUD.java (12.8 KB)
+│   │   │   │   │   ├── entrepriseCRUD.java (10.0 KB)
+│   │   │   │   │   ├── extract_CV_data.java (4.5 KB)
+│   │   │   │   │   ├── generationMotDePasse.java (596 B)
+│   │   │   │   │   ├── hachageMotDePasse.java (806 B)
+│   │   │   │   │   ├── serviceEmail.java (1.6 KB)
+│   │   │   │   │   └── visiteurCRUD.java (2.6 KB)
+│   │   │   │   ├── formation/
+│   │   │   │   │   ├── EvaluationCRUD.java (7.6 KB)
+│   │   │   │   │   ├── formationCRUD.java (3.7 KB)
+│   │   │   │   │   ├── inscription_formationCRUD.java (5.4 KB)
+│   │   │   │   │   └── InterfaceCRUD.java (310 B)
+│   │   │   │   ├── offres/
+│   │   │   │   │   ├── CandidatCRUD.java (3.7 KB)
+│   │   │   │   │   ├── GoogleMeetService.java (5.6 KB)
+│   │   │   │   │   ├── MatchingService.java (3.7 KB)
+│   │   │   │   │   └── OffreCRUD.java (4.1 KB)
+│   │   │   │   ├── projet/
+│   │   │   │   │   ├── Equipe_projet.java (4.2 KB)
+│   │   │   │   │   ├── GoogleCalendarService.java (15.1 KB)
+│   │   │   │   │   ├── OpenAIService.java (8.4 KB)
+│   │   │   │   │   ├── ProjetCRUD.java (4.5 KB)
+│   │   │   │   │   ├── TacheCRUD.java (3.4 KB)
+│   │   │   │   │   └── WorkloadBalancingAPI.java (13.1 KB)
+│   │   │   │   └── InterfaceCRUD.java (300 B)
+│   │   │   ├── test/
+│   │   │   │   └── Main.java (47 B)
+│   │   │   └── utils/
+│   │   │       ├── employers/
+│   │   │       │   └── configLoader.java (950 B)
+│   │   │       ├── BadgeFactory.java (1.2 KB)
+│   │   │       ├── FilePickerUtil.java (1.3 KB)
+│   │   │       ├── LanguageToolAPI.java (9.9 KB)
+│   │   │       ├── LayoutAnimator.java (1.8 KB)
+│   │   │       ├── MyDB.java (744 B)
+│   │   │       ├── ProjectStructureGenerator.java (7.9 KB)
+│   │   │       ├── RaisonAnalyzer.java (13.7 KB)
+│   │   │       ├── TextAssistant.java (18.3 KB)
+│   │   │       └── TextGeneratorAPI.java (8.6 KB)
+│   │   └── resources/
+│   │       ├── css/
+│   │       │   └── customTheme.css (8.4 KB)
+│   │       ├── emp/
+│   │       │   ├── admin_sys/
+│   │       │   │   ├── admin_systeme.fxml (4.5 KB)
+│   │       │   │   ├── demandes_entreprise.fxml (4.0 KB)
+│   │       │   │   └── homeAdmin.fxml (6.7 KB)
+│   │       │   ├── employes/
+│   │       │   │   ├── ajouter-demande-employe.fxml (13.1 KB)
+│   │       │   │   └── employe.fxml (7.8 KB)
+│   │       │   ├── RHetAdminE/
+│   │       │   │   ├── avancer-demande.fxml (10.2 KB)
+│   │       │   │   ├── employers.fxml (18.2 KB)
+│   │       │   │   ├── modifier-demande.fxml (13.1 KB)
+│   │       │   │   └── RHetAdminE.fxml (10.6 KB)
+│   │       │   ├── changer_mot_de_passe.fxml (2.7 KB)
+│   │       │   ├── compteEntreprise.fxml (7.8 KB)
+│   │       │   ├── compteVisiteur.fxml (5.7 KB)
+│   │       │   ├── Login.fxml (4.7 KB)
+│   │       │   └── profil_employe.fxml (11.7 KB)
+│   │       ├── formation/
+│   │       │   ├── edit-formation.fxml (3.1 KB)
+│   │       │   ├── evaluation-formation.fxml (3.9 KB)
+│   │       │   ├── gestion-inscriptions.fxml (1.9 KB)
+│   │       │   ├── inscription-formation.fxml (9.9 KB)
+│   │       │   ├── modifier-raison.fxml (4.1 KB)
+│   │       │   └── test-simple.fxml (0 B)
+│   │       ├── icons/
+│   │       │   ├── edit.png (1.0 KB)
+│   │       │   ├── home.png (979 B)
+│   │       │   ├── layout.png (617 B)
+│   │       │   ├── logo.png (4.1 KB)
+│   │       │   ├── send.png (1.3 KB)
+│   │       │   ├── share.png (1.2 KB)
+│   │       │   └── users.png (1.2 KB)
+│   │       ├── images/
+│   │       │   └── wordMarkLogo.png (5.1 KB)
+│   │       ├── offres/
+│   │       │   ├── candidat.fxml (7.9 KB)
+│   │       │   ├── candidature.fxml (5.3 KB)
+│   │       │   ├── description-offre.fxml (973 B)
+│   │       │   ├── entreprises-portal.fxml (2.9 KB)
+│   │       │   ├── main-front-office.fxml (2.7 KB)
+│   │       │   ├── offre.fxml (6.7 KB)
+│   │       │   ├── offres-portal.fxml (4.6 KB)
+│   │       │   ├── recrutement.fxml (1.0 KB)
+│   │       │   ├── recrutementStat.fxml (3.3 KB)
+│   │       │   └── suivi-candidature.fxml (7.3 KB)
+│   │       ├── Projet/
+│   │       │   ├── AjoutProjet.fxml (7.0 KB)
+│   │       │   └── AjoutTache.fxml (9.0 KB)
+│   │       ├── web/
+│   │       │   └── momentum-form.html (33.3 KB)
+│   │       ├── widgets/
+│   │       │   └── weather-widget.fxml (4.0 KB)
+│   │       ├── config.properties.template (223 B)
+│   │       ├── credentials.apps.googleusercontent.com.json (413 B)
+│   │       ├── credentials.json.template (0 B)
+│   │       ├── demandes-employe.fxml (24.6 KB)
+│   │       ├── demandes.fxml (31.9 KB)
+│   │       ├── employers.fxml (1.3 KB)
+│   │       ├── evenements.fxml (1.3 KB)
+│   │       ├── formations.fxml (16.5 KB)
+│   │       ├── main-view.fxml (8.7 KB)
+│   │       └── projets.fxml (39.0 KB)
+│   └── test/
+│       └── java/
+│           └── OffreTest.java (2.9 KB)
+├── tokens/
+│   └── StoredCredential (82 B)
+├── .env (336 B)
+├── pom.xml (14.1 KB)
+└── README.md (24 B)
+
+======================================================================
+SUMMARY
+======================================================================
+Total Directories: 131
+Total Files: 285
+
+File Types:
+  - Java files: 113
+  - FXML files: 80
+  - XML files: 7
+  - SQL files: 0
+  - CSS files: 2
+
+======================================================================
+KEY FILES CONTENT
+======================================================================
+
+>>> pom.xml
+----------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>momentum</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- JSON Processing -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240303</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- 📧 JavaMail API for Email Sending -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- Google Calendar API -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <dependency>
+... (223 more lines)
+

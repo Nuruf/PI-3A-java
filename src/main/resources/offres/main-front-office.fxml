@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+
+<BorderPane prefHeight="800.0" prefWidth="1200.0" stylesheets="@../css/customTheme.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.offres.MainFrontOfficeController">
+
+   <!-- TOP NAVIGATION BAR -->
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="70.0" spacing="20.0" style="-fx-background-color: -color-bg-default; -fx-border-color: -color-border-muted; -fx-border-width: 0 0 1 0;">
+         <padding>
+            <Insets left="40.0" right="40.0" />
+         </padding>
+         <children>
+            <!-- LOGO -->
+            <ImageView fitHeight="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/wordMarkLogo.png" />
+               </image>
+            </ImageView>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <!-- NAVIGATION LINKS -->
+            <HBox alignment="CENTER" spacing="30.0">
+               <children>
+                  <Button fx:id="btnNavOffres" onAction="#showOffres" styleClass="flat, nav-link" text="Offres d'emploi" />
+                  <Button fx:id="btnNavEntreprises" onAction="#showEntreprises" styleClass="flat, nav-link" text="Entreprises" />
+                  <Button fx:id="btnNavSuivi" onAction="#showSuivi" styleClass="flat, nav-link" text="Suivre Candidature" />
+               </children>
+            </HBox>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <!-- USER INFO -->
+            <HBox alignment="CENTER" spacing="15.0">
+               <children>
+                  <Label fx:id="lblUserInfo"
+                         style="-fx-font-size: 13px; -fx-text-fill: -color-fg-default;"
+                         text="Bienvenue" />
+               </children>
+            </HBox>
+
+            <!-- ACTION BUTTON -->
+            <Button onAction="#handleDeonnexion" prefHeight="35.0" prefWidth="120.0" styleClass="accent" text="Déconnexion" />
+         </children>
+      </HBox>
+   </top>
+
+   <!-- DYNAMIC CONTENT AREA -->
+   <center>
+      <StackPane fx:id="contentArea" style="-fx-background-color: -color-bg-subtle;">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <!-- Sub-views like offres-portal.fxml will be loaded here -->
+      </StackPane>
+   </center>
+
+</BorderPane>
