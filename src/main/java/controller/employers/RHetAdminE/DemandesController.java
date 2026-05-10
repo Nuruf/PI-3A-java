@@ -1,6 +1,7 @@
 package controller.employers.RHetAdminE;
 
 import controller.demandes.NavigationHelper;
+import controller.demandes.DemandeFormHelper;
 import entities.demande.Demande;
 import entities.demande.DemandeDetails;
 import entities.demande.HistoriqueDemande;
@@ -125,6 +126,7 @@ public class DemandesController implements Initializable {
     private HistoriqueDemandeCRUD historiqueCRUD;
     private employeCRUD employeCrud;
     private AIDocumentGeneratorService docService;
+    private final DemandeFormHelper detailsHelper = new DemandeFormHelper();
     private Demande selectedDemande;
     private Stage loadingStage;
 
@@ -948,32 +950,26 @@ public class DemandesController implements Initializable {
 
             if (details != null && details.getDetails() != null && !details.getDetails().isEmpty()) {
                 String detailsText = details.getDetails();
+                Map<String, String> readableDetails = detailsHelper.extractReadableDetails(detailsText);
 
-                // Try to parse as JSON
-                try {
-                    if (detailsText.trim().startsWith("{")) {
-                        org.json.JSONObject json = new org.json.JSONObject(detailsText);
-                        for (String key : json.keySet()) {
-                            HBox row = new HBox(10);
-                            row.setAlignment(Pos.CENTER_LEFT);
+                if (!readableDetails.isEmpty()) {
+                    for (Map.Entry<String, String> entry : readableDetails.entrySet()) {
+                        HBox row = new HBox(10);
+                        row.setAlignment(Pos.CENTER_LEFT);
 
-                            Label keyLabel = new Label(formatKey(key) + ":");
-                            keyLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #666; -fx-min-width: 100;");
-                            keyLabel.setMinWidth(100);
+                        Label keyLabel = new Label(entry.getKey() + ":");
+                        keyLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #666; -fx-min-width: 140;");
+                        keyLabel.setMinWidth(140);
 
-                            Label valueLabel = new Label(json.optString(key, "N/A"));
-                            valueLabel.setWrapText(true);
+                        Label valueLabel = new Label(entry.getValue());
+                        valueLabel.setWrapText(true);
+                        valueLabel.setMaxWidth(Double.MAX_VALUE);
+                        HBox.setHgrow(valueLabel, Priority.ALWAYS);
 
-                            row.getChildren().addAll(keyLabel, valueLabel);
-                            detailSpecificContainer.getChildren().add(row);
-                        }
-                    } else {
-                        // Plain text
-                        Label label = new Label(detailsText);
-                        label.setWrapText(true);
-                        detailSpecificContainer.getChildren().add(label);
+                        row.getChildren().addAll(keyLabel, valueLabel);
+                        detailSpecificContainer.getChildren().add(row);
                     }
-                } catch (Exception jsonEx) {
+                } else {
                     Label label = new Label(detailsText);
                     label.setWrapText(true);
                     detailSpecificContainer.getChildren().add(label);
@@ -1240,49 +1236,21 @@ public class DemandesController implements Initializable {
         }
 
         try {
-            String trimmed = jsonString.trim();
+            Map<String, String> readableDetails = detailsHelper.extractReadableDetails(jsonString);
 
-            // Check if it's JSON
-            if (trimmed.startsWith("{")) {
-                org.json.JSONObject json = new org.json.JSONObject(trimmed);
+            if (!readableDetails.isEmpty()) {
                 StringBuilder formatted = new StringBuilder();
-
-                for (String key : json.keySet()) {
-                    String value = json.optString(key, "");
-                    if (!value.isEmpty()) {
-                        String formattedKey = formatJsonKey(key);
-                        formatted.append("• ").append(formattedKey).append(": ").append(value).append("\n");
-                    }
+                for (Map.Entry<String, String> entry : readableDetails.entrySet()) {
+                    formatted.append("• ")
+                            .append(entry.getKey())
+                            .append(": ")
+                            .append(entry.getValue())
+                            .append("\n");
                 }
-
-                return formatted.toString().trim();
-
-            } else if (trimmed.startsWith("[")) {
-                // JSON Array
-                org.json.JSONArray jsonArray = new org.json.JSONArray(trimmed);
-                StringBuilder formatted = new StringBuilder();
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    Object item = jsonArray.get(i);
-                    if (item instanceof org.json.JSONObject) {
-                        org.json.JSONObject obj = (org.json.JSONObject) item;
-                        for (String key : obj.keySet()) {
-                            String value = obj.optString(key, "");
-                            if (!value.isEmpty()) {
-                                String formattedKey = formatJsonKey(key);
-                                formatted.append("• ").append(formattedKey).append(": ").append(value).append("\n");
-                            }
-                        }
-                    } else {
-                        formatted.append("• ").append(item.toString()).append("\n");
-                    }
-                }
-
                 return formatted.toString().trim();
             }
 
-            // Not JSON, return as is
-            return jsonString;
+            return jsonString.trim();
 
         } catch (Exception e) {
             // If JSON parsing fails, return original string

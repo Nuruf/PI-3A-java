@@ -13,6 +13,15 @@ config.properties
 tokens/
 src/main/resources/credentials.apps.googleusercontent.com.json
 
-# Environment variables - NEVER commit this file
+# Environment variables - NEVER commit these files
+# They contain sensitive data like API keys, passwords, email credentials
 .env
+.env.local
+.env.*.local
+
+# IDE files
+.vscode/
+*.swp
+*.swo
+*~
 

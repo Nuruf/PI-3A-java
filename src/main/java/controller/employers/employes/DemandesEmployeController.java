@@ -756,7 +756,7 @@ public class DemandesEmployeController implements Initializable {
         try {
             DemandeDetails det = detailsCRUD.getByDemande(d.getIdDemande());
             if (det != null && det.getDetails() != null && !det.getDetails().equals("{}")) {
-                Map<String, String> parsed = formHelper.parseDetailsJson(det.getDetails());
+                Map<String, String> parsed = formHelper.extractReadableDetails(det.getDetails());
                 GridPane grid = new GridPane();
                 grid.setHgap(10);
                 grid.setVgap(5);

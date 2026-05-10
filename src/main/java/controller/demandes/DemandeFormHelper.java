@@ -9,6 +9,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.json.JSONArray;
+import org.json.JSONTokener;
+import org.json.JSONObject;
 import service.api.MapPickerDialog;
 
 import java.time.LocalDate;
@@ -32,6 +35,26 @@ public class DemandeFormHelper {
     // ═══════════════════════════════════════════════════════════════════════════
 
     private static final Map<String, List<String>> CATEGORY_TYPES = new LinkedHashMap<>();
+    private static final Set<String> IGNORED_JSON_KEYS = new HashSet<>(Arrays.asList(
+            "createdAt",
+            "confirmedAt",
+            "confirmedat",
+            "source",
+            "type",
+            "key",
+            "label",
+            "value",
+            "required",
+            "remove",
+            "replaceBase",
+            "manualMode",
+            "model",
+            "add",
+            "dynamicFieldPlan",
+            "suggestedDetails",
+            "prompt",
+            "rawPrompt"
+    ));
 
     static {
         CATEGORY_TYPES.put("Ressources Humaines", Arrays.asList(
@@ -205,6 +228,85 @@ public class DemandeFormHelper {
     }
 
     /**
+     * Build editable inputs from stored JSON details when the demande type does
+     * not have predefined fields in the Java project.
+     *
+     * This is what allows AI-generated / external JSON details to be edited
+     * manually in the Java UI instead of being shown as raw JSON.
+     */
+    public boolean buildEditableFieldsFromJson(String detailsJson, VBox container, TitledPane detailsPane) {
+        dynamicFields.clear();
+        dynamicErrorLabels.clear();
+        locationFieldKeys.clear();
+        fieldDefinitions.clear();
+
+        if (container != null) {
+            container.getChildren().clear();
+        }
+
+        if (detailsJson == null || detailsJson.trim().isEmpty() || detailsJson.trim().equals("{}")) {
+            if (detailsPane != null) {
+                detailsPane.setExpanded(false);
+            }
+            return false;
+        }
+
+        if (detailsPane != null) {
+            detailsPane.setExpanded(true);
+        }
+
+        Map<String, GenericFieldItem> items = new LinkedHashMap<>();
+        try {
+            Object parsed = new JSONTokener(detailsJson.trim()).nextValue();
+            collectGenericFieldItems(parsed, items, null, null);
+        } catch (Exception e) {
+            System.err.println("Error building editable fields from JSON: " + e.getMessage());
+            return false;
+        }
+
+        if (items.isEmpty()) {
+            return false;
+        }
+
+        Label header = new Label("📋 Champs modifiables détectés automatiquement");
+        header.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #2c3e50; -fx-padding: 0 0 10 0;");
+        if (container != null) {
+            container.getChildren().add(header);
+        }
+
+        for (GenericFieldItem item : items.values()) {
+            if (item == null || item.key == null || item.key.trim().isEmpty()) {
+                continue;
+            }
+
+            String fieldKey = normalizeKey(item.key);
+            if (fieldKey.isEmpty()) {
+                continue;
+            }
+
+            String fieldLabel = item.label != null && !item.label.trim().isEmpty()
+                    ? humanizeLabel(item.label)
+                    : humanizeLabel(item.key);
+
+            FieldType fieldType = inferFieldType(fieldKey, item.value);
+            FieldDefinition definition = new FieldDefinition(fieldKey, fieldLabel, fieldType, false);
+            fieldDefinitions.put(fieldKey, definition);
+
+            VBox fieldBox = createFieldBox(definition);
+            if (container != null) {
+                container.getChildren().add(fieldBox);
+            }
+
+            Control control = dynamicFields.get(fieldKey);
+            if (control != null) {
+                setFieldValue(control, item.value);
+            }
+        }
+
+        return !dynamicFields.isEmpty();
+    }
+
+    /**
      * Fill dynamic fields from JSON - FIXED VERSION
      */
     public void fillDynamicFieldsFromJson(String detailsJson) {
@@ -288,6 +390,7 @@ public class DemandeFormHelper {
     private String normalizeKey(String key) {
         if (key == null) return "";
         return key.toLowerCase()
+                .replaceAll("^ai([ _-]+)?", "")
                 .replaceAll("[\\s_-]", "")
                 .replaceAll("[àâäáã]", "a")
                 .replaceAll("[éèêëẽ]", "e")
@@ -545,6 +648,195 @@ public class DemandeFormHelper {
         return fields;
     }
 
+    private void collectGenericFieldItems(Object node, Map<String, GenericFieldItem> items, String inheritedKey, String inheritedLabel) {
+        if (node == null || node == JSONObject.NULL) {
+            return;
+        }
+
+        if (node instanceof String) {
+            String text = ((String) node).trim();
+            if (text.isEmpty()) return;
+            if (looksLikeJson(text)) {
+                try {
+                    collectGenericFieldItems(new JSONTokener(text).nextValue(), items, inheritedKey, inheritedLabel);
+                } catch (Exception ignored) {
+                    // keep as plain text if parsing fails
+                }
+            }
+            return;
+        }
+
+        if (node instanceof JSONArray) {
+            JSONArray array = (JSONArray) node;
+            for (int i = 0; i < array.length(); i++) {
+                collectGenericFieldItems(array.opt(i), items, inheritedKey, inheritedLabel);
+            }
+            return;
+        }
+
+        if (node instanceof JSONObject) {
+            JSONObject object = (JSONObject) node;
+
+            // Field-like object: {key,label,value,...}
+            if (object.has("value") && !object.isNull("value")) {
+                Object valueNode = object.opt("value");
+                String key = object.optString("key", inheritedKey != null ? inheritedKey : "");
+                String label = object.optString("label", inheritedLabel != null ? inheritedLabel : "");
+
+                if (valueNode instanceof JSONObject || valueNode instanceof JSONArray) {
+                    collectGenericFieldItems(valueNode, items, key, label);
+                } else {
+                    String value = normalizeValue(valueNode);
+                    String normalizedKey = normalizeKey(key);
+                    if (!value.isEmpty() && !normalizedKey.isEmpty() && !isTechnicalKey(key)) {
+                        putGenericFieldItem(items, normalizedKey, new GenericFieldItem(key, label, value));
+                    }
+                }
+            }
+
+            for (String key : object.keySet()) {
+                if (isTechnicalKey(key)) {
+                    Object child = object.opt(key);
+                    if (child instanceof JSONObject || child instanceof JSONArray) {
+                        collectGenericFieldItems(child, items, inheritedKey, inheritedLabel);
+                    }
+                    continue;
+                }
+
+                Object child = object.opt(key);
+                if (child == null || child == JSONObject.NULL) {
+                    continue;
+                }
+
+                if (child instanceof JSONObject || child instanceof JSONArray) {
+                    collectGenericFieldItems(child, items, key, humanizeLabel(key));
+                } else {
+                    String value = normalizeValue(child);
+                    String normalizedKey = normalizeKey(key);
+                    if (!value.isEmpty() && !normalizedKey.isEmpty()) {
+                        putGenericFieldItem(items, normalizedKey, new GenericFieldItem(key, humanizeLabel(key), value));
+                    }
+                }
+            }
+        }
+    }
+
+    private void putGenericFieldItem(Map<String, GenericFieldItem> items, String normalizedKey, GenericFieldItem item) {
+        if (items == null || normalizedKey == null || normalizedKey.trim().isEmpty() || item == null) {
+            return;
+        }
+
+        GenericFieldItem existing = items.get(normalizedKey);
+        if (existing == null || isBetterGenericItem(existing, item)) {
+            items.put(normalizedKey, item);
+        }
+    }
+
+    private boolean isBetterGenericItem(GenericFieldItem current, GenericFieldItem candidate) {
+        if (current == null) return true;
+        if (candidate == null) return false;
+
+        String currentValue = current.value != null ? current.value.trim() : "";
+        String candidateValue = candidate.value != null ? candidate.value.trim() : "";
+
+        // Prefer human-friendly text over nested/raw JSON.
+        if (looksLikeJson(currentValue) && !looksLikeJson(candidateValue)) {
+            return true;
+        }
+
+        // Prefer shorter metadata-free labels when both are plain text.
+        boolean currentTechnical = isTechnicalKey(current.key) || isTechnicalKey(current.label);
+        boolean candidateTechnical = isTechnicalKey(candidate.key) || isTechnicalKey(candidate.label);
+        return currentTechnical && !candidateTechnical;
+    }
+
+    private FieldType inferFieldType(String key, String value) {
+        String lowerKey = key != null ? key.toLowerCase(Locale.ROOT) : "";
+        String safeValue = value != null ? value.trim() : "";
+
+        if (lowerKey.contains("date") || lowerKey.contains("jour") || lowerKey.contains("deadline")) {
+            return FieldType.DATE;
+        }
+        if (lowerKey.contains("montant") || lowerKey.contains("quantite") || lowerKey.contains("nombre")
+                || lowerKey.contains("hours") || lowerKey.contains("heure") || lowerKey.contains("durée")
+                || lowerKey.contains("duree")) {
+            return FieldType.NUMBER;
+        }
+        if (safeValue.contains("\n") || safeValue.length() > 80) {
+            return FieldType.TEXTAREA;
+        }
+        return FieldType.TEXT;
+    }
+
+    private String humanizeLabel(String key) {
+        if (key == null) return "";
+
+        String normalized = key.trim().toLowerCase(Locale.ROOT)
+                .replaceAll("^ai([ _-]+)?", "")
+                .replaceAll("[\\s_-]", "")
+                .replaceAll("[àâäáã]", "a")
+                .replaceAll("[éèêëẽ]", "e")
+                .replaceAll("[ïîíì]", "i")
+                .replaceAll("[ôöóòõ]", "o")
+                .replaceAll("[ùûüúũ]", "u")
+                .replaceAll("ç", "c")
+                .replaceAll("ñ", "n");
+
+        Map<String, String> translations = new LinkedHashMap<>();
+        translations.put("horrairesouhaite", "Horaire souhaité");
+        translations.put("horairesouhaite", "Horaire souhaité");
+        translations.put("horraires", "Horaires");
+        translations.put("periodeconcernee", "Période concernée");
+        translations.put("motifchangement", "Motif du changement");
+        translations.put("horairessouhaites", "Horaires souhaités");
+        translations.put("horairesactuels", "Horaires actuels");
+        translations.put("jourssouhaites", "Jours souhaités");
+        translations.put("datedebut", "Date de début");
+        translations.put("datefin", "Date de fin");
+        translations.put("dateheure", "Date / heure");
+        translations.put("typedemande", "Type de demande");
+        translations.put("motif", "Motif");
+        translations.put("justification", "Justification");
+        translations.put("descriptionprobleme", "Description du problème");
+        translations.put("impact", "Impact");
+        translations.put("organisme", "Organisme");
+        translations.put("lieuformation", "Lieu de formation");
+        translations.put("cout", "Coût");
+        translations.put("nomformationext", "Nom de la formation");
+        translations.put("nomlogiciel", "Nom du logiciel");
+        translations.put("systeme", "Système / application");
+        translations.put("typeacces", "Type d'accès");
+        translations.put("typeprobleme", "Type de problème");
+        translations.put("specifications", "Spécifications souhaitées");
+        translations.put("quantite", "Quantité");
+        translations.put("montant", "Montant");
+        translations.put("duree", "Durée");
+
+        if (translations.containsKey(normalized)) {
+            return translations.get(normalized);
+        }
+
+        String label = key.trim()
+                .replaceAll("^ai([ _-]+)?", "")
+                .replaceAll("([a-z])([A-Z])", "$1 $2")
+                .replace('_', ' ')
+                .replace('-', ' ')
+                .trim();
+
+        if (label.isEmpty()) return "";
+
+        StringBuilder sb = new StringBuilder();
+        for (String part : label.split("\\s+")) {
+            if (part.isEmpty()) continue;
+            if (sb.length() > 0) sb.append(' ');
+            sb.append(part.substring(0, 1).toUpperCase(Locale.ROOT));
+            if (part.length() > 1) {
+                sb.append(part.substring(1).toLowerCase(Locale.ROOT));
+            }
+        }
+        return sb.toString();
+    }
+
     // ═══════════════════════════════════════════════════════════════════════════
     // FIELD CREATION
     // ═══════════════════════════════════════════════════════════════════════════
@@ -734,8 +1026,53 @@ public class DemandeFormHelper {
             ((DatePicker) control).valueProperty().addListener((o, ov, nv) -> {
                 if (nv != null) {
                     clearFieldError(control, errorLabel);
+                    // Validate all date ranges when any date changes
+                    validateDateRangesRealtime();
                 }
             });
+        }
+    }
+
+    /**
+     * Real-time validation of date ranges as user enters dates
+     */
+    private void validateDateRangesRealtime() {
+        String[][] dateRangePairs = {
+                {"dateDebut", "dateFin"},
+                {"dateDebutTeletravail", "dateFinTeletravail"},
+                {"dateDebutFormation", "dateDebutFormation"}
+        };
+
+        for (String[] pair : dateRangePairs) {
+            String startKey = pair[0];
+            String endKey = pair[1];
+
+            Control startControl = dynamicFields.get(startKey);
+            Control endControl = dynamicFields.get(endKey);
+
+            if (startControl instanceof DatePicker && endControl instanceof DatePicker) {
+                DatePicker startPicker = (DatePicker) startControl;
+                DatePicker endPicker = (DatePicker) endControl;
+
+                LocalDate startDate = startPicker.getValue();
+                LocalDate endDate = endPicker.getValue();
+
+                Label errorLabel = dynamicErrorLabels.get(endKey);
+
+                if (startDate != null && endDate != null && endDate.isBefore(startDate)) {
+                    if (errorLabel != null) {
+                        errorLabel.setText("⚠️ La date de fin doit être >= à la date de début");
+                    }
+                    endPicker.setStyle(endPicker.getStyle().replaceAll("-fx-border-color:[^;]*;?", "") +
+                            "; -fx-border-color: #e74c3c; -fx-border-width: 2;");
+                } else if (startDate != null && endDate != null) {
+                    // Dates are valid, clear any error
+                    if (errorLabel != null) {
+                        errorLabel.setText("");
+                    }
+                    endPicker.setStyle(endPicker.getStyle().replaceAll("-fx-border-color:[^;]*;?", ""));
+                }
+            }
         }
     }
 
@@ -760,6 +1097,51 @@ public class DemandeFormHelper {
                 }
                 control.setStyle(control.getStyle() + "; -fx-border-color: #e74c3c; -fx-border-width: 2;");
                 valid = false;
+            }
+        }
+
+        // Validate date ranges (dateFin >= dateDebut, etc.)
+        valid = validateDateRanges() && valid;
+
+        return valid;
+    }
+
+    /**
+     * Validate that end dates are >= start dates
+     */
+    private boolean validateDateRanges() {
+        boolean valid = true;
+
+        // Define date range pairs to validate: [startKey, endKey]
+        String[][] dateRangePairs = {
+                {"dateDebut", "dateFin"},
+                {"dateDebutTeletravail", "dateFinTeletravail"},
+                {"dateDebutFormation", "dateDebutFormation"}, // If there's an end date for formations
+                {"dateDebutHoraires", "dureeChangement"} // Special case, check if applicable
+        };
+
+        for (String[] pair : dateRangePairs) {
+            String startKey = pair[0];
+            String endKey = pair[1];
+
+            Control startControl = dynamicFields.get(startKey);
+            Control endControl = dynamicFields.get(endKey);
+
+            if (startControl instanceof DatePicker && endControl instanceof DatePicker) {
+                DatePicker startPicker = (DatePicker) startControl;
+                DatePicker endPicker = (DatePicker) endControl;
+
+                LocalDate startDate = startPicker.getValue();
+                LocalDate endDate = endPicker.getValue();
+
+                if (startDate != null && endDate != null && endDate.isBefore(startDate)) {
+                    Label errorLabel = dynamicErrorLabels.get(endKey);
+                    if (errorLabel != null) {
+                        errorLabel.setText("⚠️ La date de fin doit être supérieure ou égale à la date de début");
+                    }
+                    endPicker.setStyle(endPicker.getStyle() + "; -fx-border-color: #e74c3c; -fx-border-width: 2;");
+                    valid = false;
+                }
             }
         }
 
@@ -922,108 +1304,180 @@ public class DemandeFormHelper {
 
     public Map<String, String> parseDetailsJson(String json) {
         Map<String, String> result = new LinkedHashMap<>();
-
-        if (json == null || json.equals("{}") || json.trim().isEmpty()) {
-            return result;
-        }
-
-        try {
-            String content = json.trim();
-            if (content.startsWith("{")) content = content.substring(1);
-            if (content.endsWith("}")) content = content.substring(0, content.length() - 1);
-
-            if (content.isEmpty()) return result;
-
-            List<String> pairs = splitJsonPairs(content);
-
-            for (String pair : pairs) {
-                int colonIndex = findColonIndex(pair);
-                if (colonIndex > 0) {
-                    String key = removeQuotes(pair.substring(0, colonIndex).trim());
-                    String value = pair.substring(colonIndex + 1).trim();
-
-                    if (value.startsWith("\"") && value.endsWith("\"")) {
-                        value = removeQuotes(value);
-                    }
-
-                    key = unescapeJson(key);
-                    value = unescapeJson(value);
-                    result.put(key, value);
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Error parsing JSON: " + e.getMessage());
-            e.printStackTrace();
-        }
-
+        collectDetails(json, result, false);
         return result;
     }
 
-    private int findColonIndex(String pair) {
-        boolean inQuotes = false;
-        for (int i = 0; i < pair.length(); i++) {
-            char c = pair.charAt(i);
-            if (c == '"' && (i == 0 || pair.charAt(i - 1) != '\\')) {
-                inQuotes = !inQuotes;
-            }
-            if (c == ':' && !inQuotes) {
-                return i;
-            }
-        }
-        return -1;
+    /**
+     * Returns readable label/value pairs for display purposes.
+     * This keeps only the human-friendly values and skips technical ML metadata.
+     */
+    public Map<String, String> extractReadableDetails(String json) {
+        Map<String, String> result = new LinkedHashMap<>();
+        collectDetails(json, result, true);
+        return result;
     }
 
-    private List<String> splitJsonPairs(String content) {
-        List<String> pairs = new ArrayList<>();
-        StringBuilder current = new StringBuilder();
-        boolean inQuotes = false;
-        int braceDepth = 0;
+    private void collectDetails(String json, Map<String, String> result, boolean displayMode) {
+        if (json == null || json.trim().isEmpty() || "{}".equals(json.trim())) {
+            return;
+        }
 
-        for (int i = 0; i < content.length(); i++) {
-            char c = content.charAt(i);
+        try {
+            Object parsed = new JSONTokener(json.trim()).nextValue();
+            collectDetails(parsed, result, displayMode);
+        } catch (Exception e) {
+            System.err.println("Error parsing JSON: " + e.getMessage());
+        }
+    }
 
-            if (c == '"' && (i == 0 || content.charAt(i - 1) != '\\')) {
-                inQuotes = !inQuotes;
-            }
-            if (!inQuotes) {
-                if (c == '{') braceDepth++;
-                if (c == '}') braceDepth--;
-            }
-            if (c == ',' && !inQuotes && braceDepth == 0) {
-                String pair = current.toString().trim();
-                if (!pair.isEmpty()) {
-                    pairs.add(pair);
+    private void collectDetails(Object node, Map<String, String> result, boolean displayMode) {
+        if (node == null || node == JSONObject.NULL) {
+            return;
+        }
+
+        if (node instanceof String) {
+            String text = ((String) node).trim();
+            if (text.isEmpty()) return;
+
+            if (looksLikeJson(text)) {
+                try {
+                    collectDetails(new JSONTokener(text).nextValue(), result, displayMode);
+                } catch (Exception ignored) {
+                    // Fall through: plain text string
                 }
-                current = new StringBuilder();
-            } else {
-                current.append(c);
+            }
+            return;
+        }
+
+        if (node instanceof JSONArray) {
+            JSONArray array = (JSONArray) node;
+            for (int i = 0; i < array.length(); i++) {
+                collectDetails(array.opt(i), result, displayMode);
+            }
+            return;
+        }
+
+        if (node instanceof JSONObject) {
+            JSONObject object = (JSONObject) node;
+
+            // If this object is a structured field like {label, key, value}, keep only the meaningful value.
+            if (object.has("value") && !object.isNull("value")) {
+                handleStructuredField(object, result, displayMode);
+            }
+
+            for (String key : object.keySet()) {
+                if (isTechnicalKey(key)) {
+                    Object child = object.opt(key);
+                    if (child instanceof JSONObject || child instanceof JSONArray) {
+                        collectDetails(child, result, displayMode);
+                    }
+                    continue;
+                }
+
+                Object child = object.opt(key);
+                if (child == null || child == JSONObject.NULL) {
+                    continue;
+                }
+
+                if (child instanceof JSONObject || child instanceof JSONArray) {
+                    collectDetails(child, result, displayMode);
+                } else if (!displayMode) {
+                    addEntry(result, key, normalizeValue(child), false);
+                } else {
+                    addEntry(result, formatDisplayKey(key), normalizeValue(child), true);
+                }
             }
         }
-
-        String lastPair = current.toString().trim();
-        if (!lastPair.isEmpty()) {
-            pairs.add(lastPair);
-        }
-
-        return pairs;
     }
 
-    private String removeQuotes(String s) {
-        if (s == null) return "";
-        s = s.trim();
-        if (s.startsWith("\"") && s.endsWith("\"") && s.length() >= 2) {
-            return s.substring(1, s.length() - 1);
+    private void handleStructuredField(JSONObject object, Map<String, String> result, boolean displayMode) {
+        Object valueNode = object.opt("value");
+        if (valueNode == null || valueNode == JSONObject.NULL) {
+            return;
         }
-        return s;
+
+        // If the "value" is itself JSON, recurse into it instead of printing raw JSON.
+        if (valueNode instanceof JSONObject || valueNode instanceof JSONArray) {
+            collectDetails(valueNode, result, displayMode);
+            return;
+        }
+
+        String value = normalizeValue(valueNode);
+        if (value.isEmpty()) {
+            return;
+        }
+
+        String technicalKey = normalizeKey(object.optString("key", ""));
+        String label = object.optString("label", "").trim();
+
+        if (displayMode) {
+            String displayKey = !label.isEmpty() ? label : formatDisplayKey(object.optString("key", ""));
+            addEntry(result, displayKey, value, true);
+        } else {
+            String storageKey = !technicalKey.isEmpty() ? technicalKey : normalizeKey(label);
+            if (!storageKey.isEmpty()) {
+                addEntry(result, storageKey, value, false);
+            }
+        }
     }
 
-    private String unescapeJson(String text) {
-        if (text == null) return "";
-        return text.replace("\\n", "\n")
-                .replace("\\r", "\r")
-                .replace("\\t", "\t")
-                .replace("\\\"", "\"")
-                .replace("\\\\", "\\");
+    private void addEntry(Map<String, String> result, String key, String value, boolean displayMode) {
+        if (key == null || key.trim().isEmpty() || value == null || value.trim().isEmpty()) {
+            return;
+        }
+
+        String normalizedKey = displayMode ? key.trim() : normalizeKey(key);
+        if (normalizedKey.isEmpty()) {
+            return;
+        }
+
+        // Do not overwrite a better human-readable value with a raw nested copy.
+        if (!result.containsKey(normalizedKey) || isBetterValue(result.get(normalizedKey), value)) {
+            result.put(normalizedKey, value.trim());
+        }
+    }
+
+    private boolean isBetterValue(String current, String candidate) {
+        if (current == null || current.trim().isEmpty()) return true;
+        if (candidate == null || candidate.trim().isEmpty()) return false;
+        return looksLikeJson(current) && !looksLikeJson(candidate);
+    }
+
+    private boolean looksLikeJson(String text) {
+        if (text == null) return false;
+        String trimmed = text.trim();
+        return (trimmed.startsWith("{") && trimmed.endsWith("}")) ||
+                (trimmed.startsWith("[") && trimmed.endsWith("]"));
+    }
+
+    private boolean isTechnicalKey(String key) {
+        if (key == null) return false;
+        return IGNORED_JSON_KEYS.contains(key.trim()) || IGNORED_JSON_KEYS.contains(key.trim().toLowerCase(Locale.ROOT));
+    }
+
+    private String normalizeValue(Object value) {
+        if (value == null || value == JSONObject.NULL) {
+            return "";
+        }
+        if (value instanceof JSONObject || value instanceof JSONArray) {
+            return value.toString();
+        }
+        return String.valueOf(value).replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t").trim();
+    }
+
+
+    private String formatDisplayKey(String key) {
+        if (key == null || key.trim().isEmpty()) return "";
+
+        String cleaned = key.trim()
+                .replaceAll("^[aA][iI][ _-]+", "")
+                .replaceAll("([a-z])([A-Z])", "$1 $2")
+                .replace('_', ' ')
+                .trim();
+
+        if (cleaned.isEmpty()) return "";
+        return cleaned.substring(0, 1).toUpperCase(Locale.ROOT) + cleaned.substring(1);
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -1071,6 +1525,18 @@ public class DemandeFormHelper {
             this.type = type;
             this.required = required;
             this.options = options;
+        }
+    }
+
+    private static class GenericFieldItem {
+        final String key;
+        final String label;
+        final String value;
+
+        GenericFieldItem(String key, String label, String value) {
+            this.key = key;
+            this.label = label;
+            this.value = value;
         }
     }
 }

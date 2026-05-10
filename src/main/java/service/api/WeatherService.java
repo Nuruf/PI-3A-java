@@ -29,13 +29,11 @@ public class WeatherService {
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(15, TimeUnit.SECONDS)
                 .build();
-        this.enabled = ApiConfig.WEATHER_API_KEY != null
-                && !ApiConfig.WEATHER_API_KEY.contains("xxxxxxx")
-                && !ApiConfig.WEATHER_API_KEY.isEmpty();
 
-        System.out.println(enabled
-                ? "✅ Weather service configured"
-                : "⚠️ Weather API key not set in ApiConfig.java");
+        String weatherKey = EnvConfig.get("WEATHER_API_KEY", "");
+        this.enabled = weatherKey != null && !weatherKey.isEmpty() && !weatherKey.contains("xxxxxxx");
+
+        System.out.println(enabled ? "Weather service enabled" : "Weather API key not set in .env");
     }
 
     public boolean isEnabled() { return enabled; }
@@ -49,9 +47,9 @@ public class WeatherService {
         if (!enabled) return getDefaultWeather();
 
         try {
-            String url = ApiConfig.WEATHER_BASE_URL
-                    + "?q=" + ApiConfig.OFFICE_CITY + "," + ApiConfig.COUNTRY_CODE
-                    + "&appid=" + ApiConfig.WEATHER_API_KEY
+            String url = EnvConfig.get("WEATHER_BASE_URL", "https://api.openweathermap.org/data/2.5/weather")
+                    + "?q=" + EnvConfig.get("OFFICE_CITY", "Tunis") + "," + EnvConfig.get("COUNTRY_CODE", "TN")
+                    + "&appid=" + EnvConfig.get("WEATHER_API_KEY", "")
                     + "&units=metric&lang=fr";
 
             Request req = new Request.Builder().url(url).build();
@@ -81,9 +79,9 @@ public class WeatherService {
         if (!enabled) return getDefaultForecast();
 
         try {
-            String url = ApiConfig.FORECAST_BASE_URL
-                    + "?q=" + ApiConfig.OFFICE_CITY + "," + ApiConfig.COUNTRY_CODE
-                    + "&appid=" + ApiConfig.WEATHER_API_KEY
+            String url = EnvConfig.get("FORECAST_BASE_URL", "https://api.openweathermap.org/data/2.5/forecast")
+                    + "?q=" + EnvConfig.get("OFFICE_CITY", "Tunis") + "," + EnvConfig.get("COUNTRY_CODE", "TN")
+                    + "&appid=" + EnvConfig.get("WEATHER_API_KEY", "")
                     + "&units=metric&lang=fr";
 
             Request req = new Request.Builder().url(url).build();
@@ -290,8 +288,8 @@ public class WeatherService {
 
     private WeatherData getDefaultWeather() {
         WeatherData d = new WeatherData();
-        d.cityName = ApiConfig.OFFICE_CITY;
-        d.country  = ApiConfig.COUNTRY_CODE;
+        d.cityName = EnvConfig.get("OFFICE_CITY", "Tunis");
+        d.country  = EnvConfig.get("COUNTRY_CODE", "TN");
         d.temperature = 25; d.feelsLike = 25; d.humidity = 50;
         d.description = "Données non disponibles";
         d.main = "Unknown"; d.icon = "01d"; d.isValid = false;

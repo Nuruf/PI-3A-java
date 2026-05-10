@@ -207,6 +207,15 @@ public class ModifierDemandeController implements Initializable {
                     System.out.println(">>> Creating dynamic fields for: " + newVal);
                     formHelper.updateDynamicFields(newVal, dynamicFieldsContainer, detailsPane);
 
+                    // Fallback: if there are no predefined fields for this type,
+                    // build editable fields directly from the saved JSON details.
+                    boolean hasPredefinedFields = !formHelper.getDynamicFields().isEmpty();
+                    if (!hasPredefinedFields && shouldFillDetails && pendingDetailsJson != null
+                            && !pendingDetailsJson.isEmpty() && !pendingDetailsJson.equals("{}")) {
+                        System.out.println(">>> No predefined fields found, building generic editable fields from JSON");
+                        formHelper.buildEditableFieldsFromJson(pendingDetailsJson, dynamicFieldsContainer, detailsPane);
+                    }
+
                     // Step 2: Update destination visibility
                     updateDestinationVisibility(newVal);
 

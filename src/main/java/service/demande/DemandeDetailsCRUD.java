@@ -13,7 +13,7 @@ public class DemandeDetailsCRUD {
     }
 
     public void ajouter(DemandeDetails details) throws SQLException {
-        String req = "INSERT INTO demande_details (id_demande, details) VALUES (?, ?)";
+        String req = "INSERT INTO demande_detail (demande_id , details) VALUES (?, ?)";
         try (PreparedStatement pst = conn.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
             pst.setInt(1, details.getIdDemande());
             pst.setString(2, details.getDetails());
@@ -27,7 +27,7 @@ public class DemandeDetailsCRUD {
     }
 
     public void modifier(DemandeDetails details) throws SQLException {
-        String req = "UPDATE demande_details SET details=? WHERE id_demande=?";
+        String req = "UPDATE demande_detail SET details=? WHERE demande_id=?";
         try (PreparedStatement pst = conn.prepareStatement(req)) {
             pst.setString(1, details.getDetails());
             pst.setInt(2, details.getIdDemande());
@@ -36,14 +36,14 @@ public class DemandeDetailsCRUD {
     }
 
     public DemandeDetails getByDemande(int idDemande) throws SQLException {
-        String req = "SELECT * FROM demande_details WHERE id_demande=?";
+        String req = "SELECT * FROM demande_detail WHERE demande_id=?";
         try (PreparedStatement pst = conn.prepareStatement(req)) {
             pst.setInt(1, idDemande);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 DemandeDetails d = new DemandeDetails();
                 d.setIdDetails(rs.getInt("id_details"));
-                d.setIdDemande(rs.getInt("id_demande"));
+                d.setIdDemande(rs.getInt("demande_id"));
                 d.setDetails(rs.getString("details"));
                 return d;
             }
@@ -52,7 +52,7 @@ public class DemandeDetailsCRUD {
     }
 
     public void supprimerByDemande(int idDemande) throws SQLException {
-        String req = "DELETE FROM demande_details WHERE id_demande=?";
+        String req = "DELETE FROM demande_detail WHERE demande_id=?";
         try (PreparedStatement pst = conn.prepareStatement(req)) {
             pst.setInt(1, idDemande);
             pst.executeUpdate();

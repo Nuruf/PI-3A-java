@@ -17,7 +17,7 @@ public class HistoriqueDemandeCRUD {
     }
 
     public void ajouter(HistoriqueDemande h) throws SQLException {
-        String req = "INSERT INTO historique_demande (id_demande, ancien_statut, nouveau_statut, date_action, acteur, commentaire) VALUES (?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO historique_demande (demande_id, ancien_statut, nouveau_statut, date_action, acteur, commentaire) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pst = conn.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
             pst.setInt(1, h.getIdDemande());
             pst.setString(2, h.getAncienStatut());
@@ -36,14 +36,14 @@ public class HistoriqueDemandeCRUD {
 
     public List<HistoriqueDemande> getByDemande(int idDemande) throws SQLException {
         List<HistoriqueDemande> list = new ArrayList<>();
-        String req = "SELECT * FROM historique_demande WHERE id_demande=? ORDER BY date_action DESC, id_historique DESC";
+        String req = "SELECT * FROM historique_demande WHERE demande_id=? ORDER BY date_action DESC, id_historique DESC";
         try (PreparedStatement pst = conn.prepareStatement(req)) {
             pst.setInt(1, idDemande);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 HistoriqueDemande h = new HistoriqueDemande();
                 h.setIdHistorique(rs.getInt("id_historique"));
-                h.setIdDemande(rs.getInt("id_demande"));
+                h.setIdDemande(rs.getInt("demande_id"));
                 h.setAncienStatut(rs.getString("ancien_statut"));
                 h.setNouveauStatut(rs.getString("nouveau_statut"));
                 h.setDateAction(rs.getTimestamp("date_action"));
@@ -56,7 +56,7 @@ public class HistoriqueDemandeCRUD {
     }
 
     public void supprimerByDemande(int idDemande) throws SQLException {
-        String req = "DELETE FROM historique_demande WHERE id_demande=?";
+        String req = "DELETE FROM historique_demande WHERE demande_id=?";
         try (PreparedStatement pst = conn.prepareStatement(req)) {
             pst.setInt(1, idDemande);
             pst.executeUpdate();

@@ -15,7 +15,7 @@ public class DemandeCRUD {
     }
 
     public void ajouter(Demande demande) throws SQLException {
-        String sql = "INSERT INTO demande (id_employe, categorie, titre, "
+        String sql = "INSERT INTO demande (employe_id, categorie, titre, "
                 + "description, priorite, status, date_creation, type_demande) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = connection.prepareStatement(sql,
@@ -74,7 +74,7 @@ public class DemandeCRUD {
 
     public List<Demande> getByEmploye(int idEmploye) throws SQLException {
         List<Demande> list = new ArrayList<>();
-        String sql = "SELECT * FROM demande WHERE id_employe=? "
+        String sql = "SELECT * FROM demande WHERE employe_id=? "
                 + "ORDER BY date_creation DESC";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setInt(1, idEmploye);
@@ -134,7 +134,7 @@ public class DemandeCRUD {
     private Demande extractDemande(ResultSet rs) throws SQLException {
         Demande d = new Demande();
         d.setIdDemande(rs.getInt("id_demande"));
-        d.setIdEmploye(rs.getInt("id_employe"));
+        d.setIdEmploye(rs.getInt("employe_id"));
         d.setCategorie(rs.getString("categorie"));
         d.setTitre(rs.getString("titre"));
         d.setDescription(rs.getString("description"));
