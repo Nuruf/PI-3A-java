@@ -896,7 +896,7 @@ public class AnnonceAdminController {
     private String getEmployeeName(int employeId) {
         try {
             java.sql.Connection conn = utils.MyDB.getInstance().getConn();
-            String sql = "SELECT prenom, nom FROM `employé` WHERE id_employe = ?";
+            String sql = "SELECT prenom, nom FROM employe WHERE id_employe = ?";
             java.sql.PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1, employeId);
             java.sql.ResultSet rs = pst.executeQuery();

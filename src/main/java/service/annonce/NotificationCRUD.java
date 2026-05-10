@@ -96,7 +96,7 @@ public class NotificationCRUD {
     // ── Récupère tous les IDs utilisateurs connus ─────────────────
     private List<Integer> getAllUserIds() throws SQLException {
         List<Integer> ids = new ArrayList<>();
-        String sql = "SELECT id_employe FROM `employé`";
+        String sql = "SELECT id_employe FROM employe";
         PreparedStatement ps = con.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
