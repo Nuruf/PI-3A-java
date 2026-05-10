@@ -11,7 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import service.CandidatCRUD;
-import service.OffreCRUD;
+import service.offres.OffreCRUD;
 import utils.FilePickerUtil;
 import java.io.File;
 import java.nio.file.Files;

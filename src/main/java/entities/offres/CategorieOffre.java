@@ -21,12 +21,20 @@ public enum CategorieOffre {
         return displayName;
     }
 
-    public static CategorieOffre fromDisplayName(String displayName) {
+    public String getStorageValue() {
+        return name();
+    }
+
+    public static CategorieOffre fromDisplayName(String value) {
+        if (value == null) {
+            return null;
+        }
+        String normalized = value.trim();
         for (CategorieOffre categorie : CategorieOffre.values()) {
-            if (categorie.getDisplayName().equals(displayName)) {
+            if (categorie.name().equalsIgnoreCase(normalized) || categorie.getDisplayName().equalsIgnoreCase(normalized)) {
                 return categorie;
             }
         }
-        throw new IllegalArgumentException("Unknown display name: " + displayName);
+        throw new IllegalArgumentException("Unknown display name: " + value);
     }
 }

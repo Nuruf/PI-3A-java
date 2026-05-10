@@ -4,7 +4,7 @@ public enum TypeContrat {
     CDI("CDI"),
     CDD("CDD"),
     CVP("CVP"),
-    STAGE("Stage");
+    STAGE("STAGE");
 
     private final String displayName;
 

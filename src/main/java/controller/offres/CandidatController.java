@@ -20,7 +20,7 @@ import javafx.stage.FileChooser;
 import service.CandidatCRUD;
 import service.GoogleMeetService;
 import service.MatchingService;
-import service.OffreCRUD;
+import service.offres.OffreCRUD;
 import service.employers.employeCRUD;
 import service.employers.visiteurCRUD;
 import utils.BadgeFactory;

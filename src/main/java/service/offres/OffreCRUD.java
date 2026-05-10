@@ -1,4 +1,4 @@
-package service;
+package service.offres;
 
 import entities.offres.CategorieOffre;
 import entities.offres.EtatOffre;
@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.offres.TypeContrat;
+import service.InterfaceCRUD;
 import utils.MyDB;
 
-public class OffreCRUD implements InterfaceCRUD <Offre>{
+public class OffreCRUD implements InterfaceCRUD<Offre> {
 
     Connection conn;
 
@@ -30,7 +31,7 @@ public class OffreCRUD implements InterfaceCRUD <Offre>{
         ps.setDate(4, o.getDateLimite());
         ps.setString(5, o.getEtat().getDisplayName());
         ps.setString(6, o.getDescription());
-        ps.setString(7, o.getOffreCategorie().getDisplayName());
+        ps.setString(7, o.getOffreCategorie().getStorageValue());
 
         ps.executeUpdate();
         System.out.println("Offre ajoutée !");
@@ -47,7 +48,7 @@ public class OffreCRUD implements InterfaceCRUD <Offre>{
         ps.setDate(3, o.getDateLimite());
         ps.setString(4, o.getEtat().getDisplayName());
         ps.setString(5, o.getDescription());
-        ps.setString(6, o.getOffreCategorie().getDisplayName());
+        ps.setString(6, o.getOffreCategorie().getStorageValue());
 
         ps.setInt(7, o.getId());
 

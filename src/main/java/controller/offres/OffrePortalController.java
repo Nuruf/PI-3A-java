@@ -10,7 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
-import service.OffreCRUD;
+import service.offres.OffreCRUD;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -33,7 +33,7 @@ public class OffrePortalController {
     public void initialize() {
         loadDataFromDatabase();
 
-        comboFilterTypeContrat.setItems(FXCollections.observableArrayList("Tous", "CDI", "CDD", "CVP", "Stage"));
+        comboFilterTypeContrat.setItems(FXCollections.observableArrayList("Tous", "CDI", "CDD", "CVP", "STAGE"));
         comboFilterCategorie.setItems(FXCollections.observableArrayList("Tous", "Informatique", "Marketing", "Vente", "Finance", "Ressources Humaines", "Santé", "Education", "Art et Design", "Autre"));
 
         // Set default values

@@ -3,7 +3,7 @@ import entities.offres.EtatOffre;
 import entities.offres.Offre;
 import entities.offres.TypeContrat;
 import org.junit.jupiter.api.*;
-import service.OffreCRUD;
+import service.offres.OffreCRUD;
 
 import java.sql.SQLException;
 import java.util.List;

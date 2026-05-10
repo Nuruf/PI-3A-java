@@ -1,5 +1,6 @@
 package controller.offres;
 
+import entities.employers.session;
 import entities.offres.CategorieOffre;
 import entities.offres.EtatOffre;
 import entities.offres.Offre;
@@ -14,7 +15,7 @@ import javafx.scene.control.*;
 
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import service.OffreCRUD;
+import service.offres.OffreCRUD;
 import utils.BadgeFactory;
 import utils.LayoutAnimator;
 
@@ -70,7 +71,7 @@ public class OffreController {
         comboEtat.setItems(FXCollections.observableArrayList(EtatOffre.values()));
         comboCategorie.setItems(FXCollections.observableArrayList(CategorieOffre.values()));
 
-        filterTypeCB.setItems(FXCollections.observableArrayList("Tous", "CDI", "CDD", "CVP", "Stage"));
+        filterTypeCB.setItems(FXCollections.observableArrayList("Tous", "CDI", "CDD", "CVP", "STAGE"));
         filterEtatCB.setItems(FXCollections.observableArrayList("Tous", "Ouvert", "Fermé"));
         filterCategorieCB.setItems(FXCollections.observableArrayList("Tous", "Informatique", "Marketing", "Vente", "Finance", "Ressources Humaines", "Santé", "Education", "Art et Design", "Autre"));
 
@@ -284,7 +285,16 @@ public class OffreController {
     @FXML
     private void addOffre(ActionEvent event) {
         if (formOffreValide()) {
-            Offre o = new Offre(1,
+            if (session.getEmploye() == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("Aucun employé connecté. Veuillez vous reconnecter.");
+                alert.showAndWait();
+                return;
+            }
+
+            Offre o = new Offre(session.getEmploye().getId_employé(),
                     txtTitre.getText(),
                     comboType.getValue(),
                     java.sql.Date.valueOf(dpDate.getValue()),
